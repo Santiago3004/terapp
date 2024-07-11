@@ -12,28 +12,34 @@ type Props = {
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Rees-tesh</Text>
-      
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-        style={styles.registerButton}
-        onPress={() => navigation.navigate('Register')}
-        >
-          <Text style={styles.registerButtonText}>REGISTRARSE</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => navigation.navigate('Login')}
-        >
-          <Text style={styles.buttonText}>INICIAR SESIÓN</Text>
-        </TouchableOpacity>
+      <View style={styles.topContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>Rees-tesh</Text>
+        </View>
       </View>
-      <TouchableOpacity style={styles.infoButton}>
-        <Text style={styles.infoButtonText}>QUE ES TERAPP</Text>
-      </TouchableOpacity>
-      <Text style={styles.description}>
-        Esta aplicación te va ayudar a la rehabilitación de fracturas por medio de diferentes ejercicios físicos y va medir tu avance.
-      </Text>
+      
+      <View style={styles.bottomContainer}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            style={styles.registerButton}
+            onPress={() => navigation.navigate('Register')}
+          >
+            <Text style={styles.registerButtonText}>REGISTRARSE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={styles.buttonText}>INICIAR SESIÓN</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.infoButton}>
+          <Text style={styles.infoButtonText}>QUE ES TERAPP</Text>
+        </TouchableOpacity>
+        <Text style={styles.description}>
+          Esta aplicación te va ayudar a la rehabilitación de fracturas por medio de diferentes ejercicios físicos y va medir tu avance.
+        </Text>
+      </View>
     </View>
   );
 };
@@ -41,16 +47,26 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+  },
+  topContainer: {
+    flex: 1,
+    backgroundColor: '#1E90FF', // Azul oscuro
     justifyContent: 'center',
-    backgroundColor: '#ADD8E6',
+  },
+  bottomContainer: {
+    flex: 2,
+    backgroundColor: '#ADD8E6', // Azul claro
     padding: 20,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+    color: '#fff', // Color del texto blanco
+    paddingHorizontal: 20, // Espacio interno horizontal para el texto
   },
   buttonContainer: {
     backgroundColor: '#3B7BBF',
@@ -58,9 +74,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     width: '80%',
+    alignSelf: 'center',
     marginBottom: 20,
-    borderWidth: 2, // Agregar borde
-    borderColor: '#00BFFF', // Color morado
+    borderWidth: 2,
+    borderColor: '#00BFFF', // Borde azul claro
   },
   registerButton: {
     backgroundColor: '#fff', // Fondo blanco
@@ -71,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#00BFFF',
+    backgroundColor: '#00BFFF', // Azul claro
     padding: 15,
     borderRadius: 5,
     width: '100%',
@@ -84,6 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '60%',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
     color: '#fff',
@@ -106,6 +124,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
 
 export default HomeScreen;
