@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import Button from '../components/Button';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App'; // Asegúrate de que la ruta es correcta
+import { RootStackParamList } from '../navigation/App';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -9,29 +10,34 @@ type Props = {
   navigation: HomeScreenNavigationProp;
 };
 
+
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>Rees-tesh</Text>
+        <Image 
+            source={require('../images/ress-tesh.png')} // Ajusta la ruta de la imagen según tu estructura de carpetas
+            style={styles.logo}
+          />
         </View>
       </View>
       
       <View style={styles.bottomContainer}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.registerButton}
+          <Button
+            title="REGISTRARSE"
             onPress={() => navigation.navigate('Register')}
-          >
-            <Text style={styles.registerButtonText}>REGISTRARSE</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => navigation.navigate('Login')}
-          >
-            <Text style={styles.buttonText}>INICIAR SESIÓN</Text>
-          </TouchableOpacity>
+            customStyles={{
+              button: styles.registerButton,
+              buttonText: styles.registerButtonText,
+            }}
+
+          />
+          <Button
+            title="INICIAR SESIÓN"
+            onPress={() => navigation.navigate('Login')} 
+          />
         </View>
         <TouchableOpacity style={styles.infoButton}>
           <Text style={styles.infoButtonText}>QUE ES TERAPP</Text>
@@ -40,6 +46,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           Esta aplicación te va ayudar a la rehabilitación de fracturas por medio de diferentes ejercicios físicos y va medir tu avance.
         </Text>
       </View>
+      <Image 
+        source={require('../images/logo.png')} 
+        style={styles.logoOverlay}
+      />
     </View>
   );
 };
@@ -49,28 +59,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topContainer: {
-    flex: 1,
-    backgroundColor: '#1E90FF', // Azul oscuro
+    height: 170, // Establecer una altura fija
+    backgroundColor: '#77c2fd', // Azul oscuro
     justifyContent: 'center',
+    borderBottomWidth: 4, // Añadir el borde inferior
+    borderBottomColor: '#7f00b2', // Color morado
   },
   bottomContainer: {
-    flex: 2,
+    flex: 1, // Ajustar para que ocupe el resto del espacio
     backgroundColor: '#ADD8E6', // Azul claro
-    padding: 20,
+    paddingTop:90,
+    paddingHorizontal:30,
   },
   headerContainer: {
     alignItems: 'center',
     marginBottom: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff', // Color del texto blanco
-    paddingHorizontal: 20, // Espacio interno horizontal para el texto
+  logo: {
+    width: 180, // Ajusta el tamaño de la imagen según tus necesidades
+    height: 180, // Ajusta el tamaño de la imagen según tus necesidades
+    resizeMode: 'contain', // Ajusta el tamaño de la imagen según tus necesidades
   },
   buttonContainer: {
     backgroundColor: '#3B7BBF',
-    padding: 20,
+    padding: 25,
     borderRadius: 10,
     alignItems: 'center',
     width: '80%',
@@ -80,38 +92,21 @@ const styles = StyleSheet.create({
     borderColor: '#00BFFF', // Borde azul claro
   },
   registerButton: {
-    backgroundColor: '#fff', // Fondo blanco
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    width: '100%',
-    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#808080',
+    borderWidth: 1,
   },
-  loginButton: {
-    backgroundColor: '#00BFFF', // Azul claro
-    padding: 15,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
+  registerButtonText: {
+    color: '#000',
   },
   infoButton: {
-    backgroundColor: '#6A5ACD',
+    backgroundColor: '#7f00b2',
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
     width: '60%',
     alignItems: 'center',
     alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  registerButtonText: {
-    color: '#000', // Letra negra
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   infoButtonText: {
     color: '#fff',
@@ -121,7 +116,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: -5,
+  },
+  logoOverlay: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    position: 'absolute',
+    top: '25%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
   },
 });
 
