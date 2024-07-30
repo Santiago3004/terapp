@@ -15,8 +15,12 @@ const TextInput: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   input: {
+    color: 'black',
     width: '80%',
     height: 40,
+    borderLeftWidth: 0, // Sin borde izquierdo
+    borderRightWidth: 0, // Sin borde derecho
+    borderTopWidth: 0, // Sin borde superior
     borderColor: '#8A2BE2',
     borderWidth: 1,
     borderRadius: 5,

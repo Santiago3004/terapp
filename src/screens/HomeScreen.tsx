@@ -10,44 +10,36 @@ type Props = {
   navigation: HomeScreenNavigationProp;
 };
 
-
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <View style={styles.headerContainer}>
-        <Image 
-            source={require('../images/ress-tesh.png')} // Ajusta la ruta de la imagen según tu estructura de carpetas
-            style={styles.logo}
+        <Image
+          source={require('../images/ress-tesh.png')}
+          style={styles.logo}
+        />
+      </View>
+
+      <View style={styles.contentContainer}>
+        <View style={styles.outerContainer}>
+          <Button
+            title="INICIAR SESIÓN"
+            onPress={() => navigation.navigate('Login')}
+            style={styles.button}
           />
+          <View style={styles.infoContainer}>
+            <TouchableOpacity style={styles.infoButton}>
+              <Text style={styles.infoButtonText}>QUE ES TERAPP</Text>
+            </TouchableOpacity>
+            <Text style={styles.description}>
+              Esta aplicación te va ayudar a la rehabilitación de fracturas por medio de diferentes ejercicios físicos y va medir tu avance.
+            </Text>
+          </View>
         </View>
       </View>
       
-      <View style={styles.bottomContainer}>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="REGISTRARSE"
-            onPress={() => navigation.navigate('Register')}
-            customStyles={{
-              button: styles.registerButton,
-              buttonText: styles.registerButtonText,
-            }}
-
-          />
-          <Button
-            title="INICIAR SESIÓN"
-            onPress={() => navigation.navigate('Login')} 
-          />
-        </View>
-        <TouchableOpacity style={styles.infoButton}>
-          <Text style={styles.infoButtonText}>QUE ES TERAPP</Text>
-        </TouchableOpacity>
-        <Text style={styles.description}>
-          Esta aplicación te va ayudar a la rehabilitación de fracturas por medio de diferentes ejercicios físicos y va medir tu avance.
-        </Text>
-      </View>
-      <Image 
-        source={require('../images/logo.png')} 
+      <Image
+        source={require('../images/logo.png')}
         style={styles.logoOverlay}
       />
     </View>
@@ -57,47 +49,50 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ADD8E6',
   },
   topContainer: {
-    height: 170, // Establecer una altura fija
-    backgroundColor: '#77c2fd', // Azul oscuro
+    height: 220,
+    backgroundColor: '#77c2fd',
     justifyContent: 'center',
-    borderBottomWidth: 4, // Añadir el borde inferior
-    borderBottomColor: '#7f00b2', // Color morado
-  },
-  bottomContainer: {
-    flex: 1, // Ajustar para que ocupe el resto del espacio
-    backgroundColor: '#ADD8E6', // Azul claro
-    paddingTop:90,
-    paddingHorizontal:30,
-  },
-  headerContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    borderBottomWidth: 4,
+    borderBottomColor: '#7f00b2',
   },
-  logo: {
-    width: 180, // Ajusta el tamaño de la imagen según tus necesidades
-    height: 180, // Ajusta el tamaño de la imagen según tus necesidades
-    resizeMode: 'contain', // Ajusta el tamaño de la imagen según tus necesidades
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
   },
-  buttonContainer: {
-    backgroundColor: '#3B7BBF',
-    padding: 25,
+  outerContainer: {
+    backgroundColor: '#3B7BBF', // Azul
+    padding: 20,
     borderRadius: 10,
     alignItems: 'center',
-    width: '80%',
-    alignSelf: 'center',
+    width: '100%',
+  },
+  logo: {
+    width: 190,
+    height: 190,
+    resizeMode: 'contain',
+  },
+  button: {
+    backgroundColor: '#00BFFF',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
     marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#00BFFF', // Borde azul claro
-  },
-  registerButton: {
-    backgroundColor: '#fff',
-    borderColor: '#808080',
     borderWidth: 1,
+    borderColor: '#7f00b2',
+    width: '80%',
   },
-  registerButtonText: {
-    color: '#000',
+  infoContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: '100%',
   },
   infoButton: {
     backgroundColor: '#7f00b2',
@@ -106,7 +101,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '60%',
     alignItems: 'center',
-    alignSelf: 'center',
   },
   infoButtonText: {
     color: '#fff',
@@ -116,14 +110,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     textAlign: 'center',
-    marginTop: -5,
   },
   logoOverlay: {
     width: 100,
-    height: 100,
+    height: 120,
     resizeMode: 'contain',
     position: 'absolute',
-    top: '25%',
+    top: '26%',
     left: '50%',
     transform: [{ translateX: -50 }, { translateY: -50 }],
   },

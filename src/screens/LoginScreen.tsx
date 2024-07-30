@@ -1,5 +1,5 @@
 // src/screens/LoginScreen.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
@@ -13,6 +13,18 @@ type Props = {
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
+  // Declarar el estado 'email' con su función actualizadora 'setEmail'
+  const [email, setEmail] = useState(''); 
+  // Declarar el estado 'password' con su función actualizadora 'setPassword'
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Aquí puedes agregar la lógica de autenticación
+    const userName = email.split('@')[0]; // Simple lógica para obtener el nombre del usuario
+    navigation.navigate('Welcome', { userName });
+  };
+
+
   return (
     <View style={styles.container}>
       {/* Top Container */}
@@ -31,8 +43,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.loginTitle}>Iniciar sesión</Text>
           
           <TextInput
-            style={styles.input}
-            placeholder="Gmail"
+            placeholder="Email"
             placeholderTextColor="#8A2BE2"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -40,24 +51,20 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           />
 
           <TextInput
-            style={styles.input}
             placeholder="Contraseña"
             placeholderTextColor="#8A2BE2"
             secureTextEntry
             textAlign="center"
           />
-
+          
           <Button
             title="Iniciar sesión"
-            onPress={() => {}}
+            onPress={handleLogin}
           />
 
           <View style={styles.footer}>
             <TouchableOpacity>
               <Text style={styles.forgotPassword} onPress={() => navigation.navigate('ForgotPassword')}>¿Ha olvidado su contraseña?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.register} onPress={() => navigation.navigate('Register')}>Regístrese</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -104,27 +111,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#8A2BE2',
     marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#8A2BE2',
-    color: '#000',
-    marginBottom: 20,
-    padding: 5,
-    textAlign: 'center',
+    fontWeight: 'bold',
   },
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
-    marginTop: 20,
+    marginTop: 1,
   },
   forgotPassword: {
-    color: '#8A2BE2',
-    fontSize: 14,
-  },
-  register: {
     color: '#8A2BE2',
     fontSize: 14,
   },

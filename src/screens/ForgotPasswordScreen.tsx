@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#8A2BE2',
     marginBottom: 20,
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',

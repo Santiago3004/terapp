@@ -21,7 +21,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleRegister = async () =>{
     try{
-      const res = await axios.post('http://192.168.73.14:3000/registro',{
+      const res = await axios.post('http://192.168.137.119:3000/registro',{
         Nombres: nombres,
         Apellidos: apellidos,
         Telefono: parseInt(telefono),
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
     backgroundColor: '#ADD8E6',
-    paddingTop: 80,
+    paddingTop: 60,
     paddingHorizontal: 30,
   },
   headerContainer: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#8A2BE2',
     marginBottom: 20,
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',
