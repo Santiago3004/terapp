@@ -5,13 +5,15 @@ import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
-import axios from 'axios';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 
 type Props = {
   navigation: RegisterScreenNavigationProp;
 };
-
+ 
 const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [nombres, setNombres] = useState('');
   const [apellidos, setApellidos] = useState('')
@@ -20,29 +22,35 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleRegister = async () =>{
-    try{
-      const res = await axios.post('http://192.168.137.119:3000/registro',{
-        Nombres: nombres,
-        Apellidos: apellidos,
-        Telefono: parseInt(telefono),
-        Email: email,
-        Password: password
-      });
-      console.log("Registro exitoso", res.data)
-      Alert.alert("Registro Exitoso! 🥳")
+    if(nombres && apellidos && telefono && email && password){
+      try{
+        //Registro del usuario por Firebase Auth
+        const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
 
-      setNombres('')
-      setApellidos('')
-      setTelefono('')
-      setEmail('')
-      setPassword('')
+        // Mensaje al correo
+        await user.sendEmailVerification();
 
-      navigation.navigate('Login')
+        // Aqui se guarda la informacion adicional del usuario
+        await firestore().collection('Pacientes').doc(user.uid).set({
+          nombres,
+          apellidos,
+          telefono,
+          email,
+        });
+        Alert.alert('Registro exitoso', 'El usuario ha sido registrado correctamente. Por favor, verifica tu correo electrónico.');
+        navigation.navigate('Login');
+
+      }
+      catch(error){
+        console.error(error);
+        Alert.alert('', 'Ingresa Una Contraseña Segura De Al Menos 6 Caracteres');
+      }
     }
-    catch(error){
-      console.log('Error En El Registro',error)
-      Alert.alert("Error al registrar, por favor intenta de nuevo 😔")
+    else{
+      Alert.alert('Error', 'Todos los campos son obligatorios');
     }
+    
   };
 
 

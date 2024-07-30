@@ -23,20 +23,7 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
-const [items, setItems] = useState<any[]>([])
 
-useEffect(()=>{
-  const fetchItems = async () => {
-    try{
-      const res = await axios.get('http://192.168.137.119:3000/items')
-      setItems(res.data)
-    }
-    catch(error){
-      console.error('Error Al Obtener "fetching items" ERROR...',error)
-    }
-  };
-    fetchItems()
-},[])
 
   return (
     <NavigationContainer>

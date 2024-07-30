@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "183839717430",
+    "project_id": "ddbb-af475",
+    "storage_bucket": "ddbb-af475.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183839717430:android:b7dcb00f647adcb0e44097",
+        "android_client_info": {
+          "package_name": "com.terapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuTCGB9WZi31iU0SJISIeYYKJPkWy1_yE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
