@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-06-2024 a las 17:44:13
+-- Tiempo de generación: 09-08-2024 a las 20:20:23
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,21 +18,18 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `ter-app`
+-- Base de datos: `db_terapp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `centrosalud`
+-- Estructura de tabla para la tabla `asignacion`
 --
 
-CREATE TABLE `centrosalud` (
-  `Id_centro` int(3) NOT NULL,
-  `NombreCentro` varchar(20) NOT NULL,
-  `Nit` varchar(10) NOT NULL,
-  `Direccion` varchar(15) NOT NULL,
-  `Telefono` int(10) NOT NULL
+CREATE TABLE `asignacion` (
+  `Id_terapeuta` int(3) DEFAULT NULL,
+  `Id_terapia` int(3) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -42,13 +39,13 @@ CREATE TABLE `centrosalud` (
 --
 
 CREATE TABLE `fisioterapeuta` (
-  `Id_Terapeuta` int(3) NOT NULL,
-  `Nombres` varchar(20) NOT NULL,
-  `Apellidos` varchar(20) NOT NULL,
+  `Id_terapeuta` int(3) NOT NULL,
+  `Nombres` varchar(70) NOT NULL,
+  `Apellidos` varchar(70) NOT NULL,
   `Telefono` int(10) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `Password` varchar(10) NOT NULL,
-  `CentroSalud` int(3) NOT NULL
+  `Contrasena` varchar(10) NOT NULL,
+  `Paciente` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -59,11 +56,12 @@ CREATE TABLE `fisioterapeuta` (
 
 CREATE TABLE `paciente` (
   `Id_paciente` int(3) NOT NULL,
-  `Nombres` varchar(20) NOT NULL,
-  `Apellidos` varchar(20) NOT NULL,
+  `Nombres` varchar(70) NOT NULL,
+  `Apellidos` varchar(70) NOT NULL,
   `Telefono` int(10) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `Password` varchar(10) NOT NULL
+  `Contrasena` varchar(10) NOT NULL,
+  `Reportes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -73,11 +71,10 @@ CREATE TABLE `paciente` (
 --
 
 CREATE TABLE `terapia` (
-  `Id_paciente` int(3) NOT NULL,
-  `Id_terapeuta` int(3) NOT NULL,
+  `Id_terapia` int(3) NOT NULL,
+  `Nombre_Ejerc` varchar(70) NOT NULL,
   `Diagnostico` text NOT NULL,
-  `Sesiones` int(3) NOT NULL,
-  `Ejercicios` text NOT NULL
+  `Ejercicio` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -85,19 +82,18 @@ CREATE TABLE `terapia` (
 --
 
 --
--- Indices de la tabla `centrosalud`
+-- Indices de la tabla `asignacion`
 --
-ALTER TABLE `centrosalud`
-  ADD PRIMARY KEY (`Id_centro`),
-  ADD UNIQUE KEY `Nit` (`Nit`),
-  ADD KEY `Id_centro` (`Id_centro`);
+ALTER TABLE `asignacion`
+  ADD KEY `fk01` (`Id_terapeuta`),
+  ADD KEY `fk02` (`Id_terapia`);
 
 --
 -- Indices de la tabla `fisioterapeuta`
 --
 ALTER TABLE `fisioterapeuta`
-  ADD PRIMARY KEY (`Id_Terapeuta`),
-  ADD KEY `fk_03` (`CentroSalud`);
+  ADD PRIMARY KEY (`Id_terapeuta`),
+  ADD KEY `fk03` (`Paciente`);
 
 --
 -- Indices de la tabla `paciente`
@@ -109,24 +105,17 @@ ALTER TABLE `paciente`
 -- Indices de la tabla `terapia`
 --
 ALTER TABLE `terapia`
-  ADD KEY `fk_01` (`Id_paciente`),
-  ADD KEY `fk_02` (`Id_terapeuta`);
+  ADD PRIMARY KEY (`Id_terapia`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `centrosalud`
---
-ALTER TABLE `centrosalud`
-  MODIFY `Id_centro` int(3) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `fisioterapeuta`
 --
 ALTER TABLE `fisioterapeuta`
-  MODIFY `Id_Terapeuta` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id_terapeuta` int(3) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `paciente`
@@ -135,21 +124,27 @@ ALTER TABLE `paciente`
   MODIFY `Id_paciente` int(3) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `terapia`
+--
+ALTER TABLE `terapia`
+  MODIFY `Id_terapia` int(3) NOT NULL AUTO_INCREMENT;
+
+--
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `asignacion`
+--
+ALTER TABLE `asignacion`
+  ADD CONSTRAINT `fk01` FOREIGN KEY (`Id_terapeuta`) REFERENCES `fisioterapeuta` (`Id_terapeuta`),
+  ADD CONSTRAINT `fk02` FOREIGN KEY (`Id_terapia`) REFERENCES `terapia` (`Id_terapia`);
 
 --
 -- Filtros para la tabla `fisioterapeuta`
 --
 ALTER TABLE `fisioterapeuta`
-  ADD CONSTRAINT `fk_03` FOREIGN KEY (`CentroSalud`) REFERENCES `centrosalud` (`Id_centro`);
-
---
--- Filtros para la tabla `terapia`
---
-ALTER TABLE `terapia`
-  ADD CONSTRAINT `fk_01` FOREIGN KEY (`Id_paciente`) REFERENCES `paciente` (`Id_paciente`),
-  ADD CONSTRAINT `fk_02` FOREIGN KEY (`Id_terapeuta`) REFERENCES `fisioterapeuta` (`Id_Terapeuta`);
+  ADD CONSTRAINT `fk03` FOREIGN KEY (`Paciente`) REFERENCES `paciente` (`Id_paciente`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
