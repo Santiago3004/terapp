@@ -68,7 +68,7 @@ const WelcomeScreen: React.FC<Props> = ({ route, navigation }) => {
               <Text style={styles.menuText} onPress={() => navigation.navigate('Profile')}>Mi cuenta</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} >
-              <Text style={styles.menuText}>Configuración</Text>
+              <Text style={styles.menuText} onPress={() => navigation.navigate('Register')}>Configuración</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} >
               <Text style={styles.menuText}onPress={() => navigation.navigate('Home')}>Cerrar sesión</Text>

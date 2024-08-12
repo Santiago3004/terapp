@@ -1,11 +1,13 @@
 // src/screens/RegisterScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import TextInput from '../components/TextInput';
-import Button from '../components/Button';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
-import axios from 'axios';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 
 type Props = {
@@ -13,117 +15,104 @@ type Props = {
 };
 
 const RegisterScreen: React.FC<Props> = ({ navigation }) => {
-  const [nombres, setNombres] = useState('');
-  const [apellidos, setApellidos] = useState('')
-  const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nombres, setNombres] = useState('');
+  const [apellidos, setApellidos] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [rol, setRol] = useState('paciente');
 
-  const handleRegister = async () =>{
-    try{
-      const res = await axios.post('http://192.168.137.119:3000/registro',{
-        Nombres: nombres,
-        Apellidos: apellidos,
-        Telefono: parseInt(telefono),
-        Email: email,
-        Password: password
+  const handleRegister = async () => {
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      // Enviar correo de verificación
+      await user.sendEmailVerification();
+
+      // Guardar datos adicionales en Firestore
+      await firestore().collection('Usuarios').doc(user.uid).set({
+        nombres,
+        apellidos,
+        telefono,
+        email,
+        rol,
       });
-      console.log("Registro exitoso", res.data)
-      Alert.alert("Registro Exitoso! 🥳")
 
-      setNombres('')
-      setApellidos('')
-      setTelefono('')
-      setEmail('')
-      setPassword('')
-
-      navigation.navigate('Login')
-    }
-    catch(error){
-      console.log('Error En El Registro',error)
-      Alert.alert("Error al registrar, por favor intenta de nuevo 😔")
+      Alert.alert('Registro exitoso', 'El usuario ha sido registrado exitosamente. Por favor, verifica tu correo electrónico.');
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error al registrar:', error);
+      Alert.alert('Error', 'Error al registrar usuario. Por favor, verifica los datos ingresados.');
     }
   };
 
-
-
   return (
     <View style={styles.container}>
-      {/* Top Container */}
       <View style={styles.topContainer}>
         <View style={styles.headerContainer}>
           <Image 
-            source={require('../images/terapp.png')} // Ajusta la ruta de la imagen según tu estructura de carpetas
+            source={require('../images/terapp.png')} 
             style={styles.logo}
           />
         </View>
       </View>
-
-      {/* Formulario de Registro */}
       <View style={styles.bottomContainer}>
         <View style={styles.formContainer}>
-          <Text style={styles.registerTitle}>Registrarse</Text>
+          <Text style={styles.registerTitle}>Registrar</Text>
           
           <TextInput
-            style={styles.input}
             placeholder="Nombres"
-            autoCapitalize="words"
-            textAlign="center"
             placeholderTextColor="#8A2BE2"
+            textAlign="center"
             onChangeText={setNombres}
             value={nombres}
           />
-
+          
           <TextInput
-            style={styles.input}
             placeholder="Apellidos"
-            autoCapitalize="words"
-            textAlign="center"
             placeholderTextColor="#8A2BE2"
+            textAlign="center"
             onChangeText={setApellidos}
             value={apellidos}
           />
 
           <TextInput
-            style={styles.input}
-            placeholder="Telefono"
-            textAlign="center"
+            placeholder="Teléfono"
             placeholderTextColor="#8A2BE2"
+            keyboardType="phone-pad"
+            textAlign="center"
             onChangeText={setTelefono}
             value={telefono}
           />
 
           <TextInput
-            style={styles.input}
-            placeholder="Gmail"
+            placeholder="Email"
+            placeholderTextColor="#8A2BE2"
             keyboardType="email-address"
             autoCapitalize="none"
             textAlign="center"
-            placeholderTextColor="#8A2BE2"
             onChangeText={setEmail}
             value={email}
-            
           />
 
           <TextInput
-            style={styles.input}
             placeholder="Contraseña"
+            placeholderTextColor="#8A2BE2"
             secureTextEntry
             textAlign="center"
-            placeholderTextColor="#8A2BE2"
             onChangeText={setPassword}
             value={password}
-
           />
-
+          
           <Button
-            title="Registrarse"
+            title="Registrar"
             onPress={handleRegister}
           />
 
           <View style={styles.footer}>
-            <TouchableOpacity>
-              <Text style={styles.goBack} onPress={() => navigation.navigate('Login')}>¿Ya tienes una cuenta? Inicia sesión</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.loginLink}>¿Ya tienes una cuenta? Iniciar sesión</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -137,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topContainer: {
-    height: 170,
+    height: 250,
     backgroundColor: '#77c2fd',
     justifyContent: 'center',
     borderBottomWidth: 4,
@@ -146,7 +135,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
     backgroundColor: '#ADD8E6',
-    paddingTop: 60,
+    paddingTop: 80,
     paddingHorizontal: 30,
   },
   headerContainer: {
@@ -161,7 +150,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
@@ -172,21 +161,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontWeight: 'bold',
   },
-  input: {
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#8A2BE2',
-    marginBottom: 20,
-    padding: 5,
-    textAlign: 'center',
-  },
   footer: {
-    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginTop: 20,
+    marginTop: 1,
   },
-  goBack: {
+  loginLink: {
     color: '#8A2BE2',
     fontSize: 14,
   },

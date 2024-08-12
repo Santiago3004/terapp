@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { View, Text, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
@@ -8,7 +9,9 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import ExerciseScreen from '../screens/ExerciseScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import axios from 'axios'
+import FisioterapeutaHome from '../screens/FisioterapeutaHome';
+import CentroSaludHome from '../screens/CentroSaludHome';
+import firestore from '@react-native-firebase/firestore';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -18,85 +21,33 @@ export type RootStackParamList = {
   Welcome: { userName: string };
   Exercise: undefined;
   Profile: undefined;
+  Fisioterapeuta: { userName: string };
+  CentroSalud: { userName: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
-const [items, setItems] = useState<any[]>([])
-
-useEffect(()=>{
-  const fetchItems = async () => {
-    try{
-      const res = await axios.get('http://192.168.137.119:3000/items')
-      setItems(res.data)
-    }
-    catch(error){
-      console.error('Error Al Obtener "fetching items" ERROR...',error)
-    }
-  };
-    fetchItems()
-},[])
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Exercise" component={ExerciseScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
-export default App;
-
-
-/* import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import ExerciseScreen from '../screens/ExerciseScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import EnterExerciseScreen from '../screens/EnterExerciseScreen';
-import ExerciseDetailScreen from '../screens/ExerciseDetailScreen';
-import axios from 'axios';
-
-export type RootStackParamList = {
-  Home: undefined;
-  Login: undefined;
-  Register: undefined;
-  ForgotPassword: undefined;
-  Welcome: { userName: string };
-  Exercise: undefined;
-  Profile: undefined;
-  EnterExercise: undefined;
-  ExerciseDetail: undefined;
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
-
-const App: React.FC = () => {
-  const [items, setItems] = useState<any[]>([]);
-
   useEffect(() => {
-    const fetchItems = async () => {
+    const testFirestore = async () => {
       try {
-        const res = await axios.get('http://192.168.137.119:3000/items');
-        setItems(res.data);
+        const docRef = firestore().collection('Usuarios').doc('testUser');
+        const doc = await docRef.get();
+
+        if (doc.exists) {
+          console.log('Firestore está funcionando correctamente:', doc.data());
+        } else {
+          console.log('No se encontró el documento de prueba en la colección Usuarios. Creando el documento...');
+          await docRef.set({ nombre: 'Usuario de prueba', email: 'test@example.com', rol: 'paciente' });
+          console.log('Documento de prueba creado en la colección Usuarios.');
+        }
       } catch (error) {
-        console.error('Error Al Obtener "fetching items" ERROR...', error);
+        console.error('Error al conectar con Firestore:', error);
+        Alert.alert('Error', 'Error al conectar con Firestore');
       }
     };
-    fetchItems();
+
+    testFirestore();
   }, []);
 
   return (
@@ -109,12 +60,11 @@ const App: React.FC = () => {
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Exercise" component={ExerciseScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="EnterExercise" component={EnterExerciseScreen} options={{ title: 'Ingresar Ejercicio' }} />
-        <Stack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} options={{ title: 'Detalle del Ejercicio' }} />
+        <Stack.Screen name="Fisioterapeuta" component={FisioterapeutaHome} />
+        <Stack.Screen name="CentroSalud" component={CentroSaludHome} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default App;
- */

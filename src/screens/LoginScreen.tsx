@@ -1,10 +1,11 @@
-// src/screens/LoginScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -13,21 +14,76 @@ type Props = {
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  // Declarar el estado 'email' con su función actualizadora 'setEmail'
   const [email, setEmail] = useState(''); 
-  // Declarar el estado 'password' con su función actualizadora 'setPassword'
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Aquí puedes agregar la lógica de autenticación
-    const userName = email.split('@')[0]; // Simple lógica para obtener el nombre del usuario
-    navigation.navigate('Welcome', { userName });
-  };
+  const handleLogin = async () => {
+    try {
+      const userCredential = await auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
 
+      if (!user.emailVerified) {
+        Alert.alert('Verificación requerida', 'Por favor, verifica tu correo electrónico antes de iniciar sesión.');
+        await auth().signOut();
+        return;
+      }
+
+      const userDoc = await firestore().collection('Usuarios').doc(user.uid).get();
+      const userData = userDoc.data();
+
+      if (userData) {
+        const userName = userData.nombres;
+        const userRole = userData.rol;
+
+        if (!userRole) {
+          Alert.alert('Error', 'El rol del usuario no está definido');
+          return;
+        }
+
+        switch (userRole) {
+          case 'paciente':
+            navigation.navigate('Welcome', { userName });
+            break;
+          case 'fisioterapeuta':
+            navigation.navigate('Fisioterapeuta', { userName });
+            break;
+          case 'centro_salud':
+            navigation.navigate('CentroSalud', { userName });
+            break;
+          default:
+            Alert.alert('Error', 'Rol de usuario no reconocido');
+            break;
+        }
+      } else {
+        Alert.alert('Error', 'No se encontraron datos del usuario');
+      }
+    } catch (err: any) {
+      console.error('Error al iniciar sesión:', err);
+      let errorMessage = 'Error al iniciar sesión. Por favor, verifica tus credenciales.';
+
+      if (err.code) {
+        switch (err.code) {
+          case 'auth/user-not-found':
+            errorMessage = 'Usuario no encontrado. Por favor, verifica tu correo electrónico.';
+            break;
+          case 'auth/wrong-password':
+            errorMessage = 'Contraseña incorrecta. Por favor, verifica tu contraseña.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Correo electrónico inválido. Por favor, verifica tu correo electrónico.';
+            break;
+          default:
+            errorMessage = 'Error desconocido. Por favor, intenta nuevamente.';
+            break;
+        }
+      }
+
+      Alert.alert('Error', errorMessage);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {/* Top Container */}
       <View style={styles.topContainer}>
         <View style={styles.headerContainer}>
           <Image 
@@ -36,8 +92,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
       </View>
-      
-      {/* Formulario de Inicio de Sesión */}
       <View style={styles.bottomContainer}>
         <View style={styles.formContainer}>
           <Text style={styles.loginTitle}>Iniciar sesión</Text>
@@ -48,6 +102,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             keyboardType="email-address"
             autoCapitalize="none"
             textAlign="center"
+            onChangeText={setEmail}
+            value={email}
           />
 
           <TextInput
@@ -55,6 +111,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             placeholderTextColor="#8A2BE2"
             secureTextEntry
             textAlign="center"
+            onChangeText={setPassword}
+            value={password}
           />
           
           <Button
@@ -63,8 +121,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           />
 
           <View style={styles.footer}>
-            <TouchableOpacity>
-              <Text style={styles.forgotPassword} onPress={() => navigation.navigate('ForgotPassword')}>¿Ha olvidado su contraseña?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+              <Text style={styles.forgotPassword}>¿Ha olvidado su contraseña?</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -78,15 +136,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topContainer: {
-    height: 250, // Establecer una altura fija
-    backgroundColor: '#77c2fd', // Azul oscuro
+    height: 250,
+    backgroundColor: '#77c2fd',
     justifyContent: 'center',
-    borderBottomWidth: 4, // Añadir el borde inferior
-    borderBottomColor: '#7f00b2', // Color morado
+    borderBottomWidth: 4,
+    borderBottomColor: '#7f00b2',
   },
   bottomContainer: {
-    flex: 1, // Ajustar para que ocupe el resto del espacio
-    backgroundColor: '#ADD8E6', // Azul claro
+    flex: 1,
+    backgroundColor: '#ADD8E6',
     paddingTop: 80,
     paddingHorizontal: 30,
   },
@@ -95,9 +153,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: 280, // Ajusta el tamaño de la imagen según tus necesidades
-    height: 280, // Ajusta el tamaño de la imagen según tus necesidades
-    resizeMode: 'contain', // Ajusta el tamaño de la imagen según tus necesidades
+    width: 280,
+    height: 280,
+    resizeMode: 'contain',
   },
   formContainer: {
     width: '100%',
