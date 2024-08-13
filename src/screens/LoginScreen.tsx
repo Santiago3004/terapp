@@ -47,9 +47,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           case 'fisioterapeuta':
             navigation.navigate('Fisioterapeuta', { userName });
             break;
-          case 'centro_salud':
-            navigation.navigate('CentroSalud', { userName });
-            break;
           default:
             Alert.alert('Error', 'Rol de usuario no reconocido');
             break;

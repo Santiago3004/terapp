@@ -52,11 +52,11 @@ const App: React.FC = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="Register" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} /> 
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Exercise" component={ExerciseScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />

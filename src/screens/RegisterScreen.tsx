@@ -20,7 +20,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [nombres, setNombres] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [telefono, setTelefono] = useState('');
-  const [rol, setRol] = useState('paciente');
+  const [rol, setRol] = useState('paciente'); 
 
   const handleRegister = async () => {
     try {
