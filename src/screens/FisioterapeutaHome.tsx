@@ -153,6 +153,11 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
     }
   };
 
+  const handleViewInfo = (usuario: Usuario) => {
+    setInfoUsuario(usuario);
+    setInfoModalVisible(true);
+  };
+
   const renderItem = ({ item }: { item: Usuario }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.nombres}</Text>
@@ -435,6 +440,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   header: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  actionButton: {
+    flex: 1,
+    marginHorizontal: 5,
+    padding: 8,
+    backgroundColor: '#003366',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',
@@ -474,59 +492,62 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+    color: '#003366',
+    marginBottom: 15,
   },
   input: {
-    width: '100%', // Ajuste para tamaño uniforme
+    width: '100%',
     padding: 10,
+    marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#cccccc',
     borderRadius: 5,
-    marginBottom: 10,
-  },
-  descriptionInput: {
-    height: 100,
-    textAlignVertical: 'top',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
   },
   button: {
     flex: 1,
-    padding: 10,
-    borderRadius: 5,
     marginHorizontal: 5,
+    paddingVertical: 10,
+    borderRadius: 5,
     alignItems: 'center',
   },
   saveButton: {
-    backgroundColor: '#28a745',
+    backgroundColor: '#003366',
   },
   cancelButton: {
-    backgroundColor: '#dc3545',
-  },
-  editButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#f44336',
   },
   closeButton: {
-    backgroundColor: '#6c757d',
+    backgroundColor: '#003366',
+    marginTop: 20,
+  },
+  editButton: {
+    backgroundColor: '#ff9800',  // Color diferente para el botón de editar
+    marginTop: 20,
   },
   infoTable: {
-    marginBottom: 20,
+    marginTop: 10,
   },
   infoRow: {
     flexDirection: 'row',
-    marginBottom: 10,
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   infoHeader: {
+    flex: 1,
     fontWeight: 'bold',
-    width: 100,
+    color: '#003366',
+    
   },
   infoCell: {
-    flex: 1,
-  },
+    flex: 2,
+    color: '#333',
+    textAlign: 'center', // Centra el texto horizontalmente
+  }
 });
 
 export default FisioterapeutaHome;

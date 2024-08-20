@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
@@ -15,7 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 
 export type RootStackParamList = {
   Home: undefined;
-  Login: undefined;
+  Login: { reset?: boolean };
   Register: undefined;
   ForgotPassword: undefined;
   Welcome: { userName: string };
@@ -56,7 +56,7 @@ const App: React.FC = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} /> 
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Exercise" component={ExerciseScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
@@ -67,4 +67,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default App;
