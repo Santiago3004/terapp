@@ -20,7 +20,7 @@ const Button: React.FC<Props> = ({ title, customStyles, ...restProps }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#00BFFF',
+    backgroundColor: '#5C6BC0',
     padding: 15,
     borderRadius: 5,
     width: '80%',

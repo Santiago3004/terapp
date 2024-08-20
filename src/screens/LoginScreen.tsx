@@ -95,7 +95,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           
           <TextInput
             placeholder="Email"
-            placeholderTextColor="#8A2BE2"
+            placeholderTextColor="#fff"
             keyboardType="email-address"
             autoCapitalize="none"
             textAlign="center"
@@ -105,7 +105,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
           <TextInput
             placeholder="Contraseña"
-            placeholderTextColor="#8A2BE2"
+            placeholderTextColor="#fff"
             secureTextEntry
             textAlign="center"
             onChangeText={setPassword}
@@ -113,6 +113,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           />
           
           <Button
+            style={styles.boton}
             title="Iniciar sesión"
             onPress={handleLogin}
           />
@@ -134,14 +135,14 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     height: 250,
-    backgroundColor: '#77c2fd',
+    backgroundColor: '#262a5b',
     justifyContent: 'center',
     borderBottomWidth: 4,
-    borderBottomColor: '#7f00b2',
+    borderBottomColor: '#5C6BC0',
   },
   bottomContainer: {
     flex: 1,
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#E0E0E0',
     paddingTop: 80,
     paddingHorizontal: 30,
   },
@@ -156,15 +157,17 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#262a5b',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
+    borderWidth: 3,
+    borderColor: '#5C6BC0',
   },
   loginTitle: {
     fontSize: 24,
-    color: '#8A2BE2',
+    color: '#fff',
     marginBottom: 20,
     fontWeight: 'bold',
   },
@@ -175,9 +178,19 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   forgotPassword: {
-    color: '#8A2BE2',
+    color: '#8E24AA',
     fontSize: 14,
   },
+  boton:{
+    backgroundColor: '#5C6BC0',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    width: '80%',
+  }
 });
 
 export default LoginScreen;

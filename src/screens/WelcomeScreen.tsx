@@ -100,15 +100,15 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     alignItems: 'center',
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#E0E0E0',
   },
   topContainer: {
     height: 150,
     width: '100%',
-    backgroundColor: '#77c2fd',
+    backgroundColor: '#262a5b',
     justifyContent: 'center',
     borderBottomWidth: 4,
-    borderBottomColor: '#7f00b2',
+    borderBottomColor: '#5C6BC0',
     marginBottom: 20,
   },
   headerContainer: {
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     fontSize: 60,
-    color: '#8A2BE2',
+    color: '#5C6BC0',
   },
   menu: {
     position: 'absolute',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     right:2,
     width: 130,
     height:190,
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#5C6BC0',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#7f00b2',
@@ -152,28 +152,30 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#7f00b2',
+    color: '#fff',
     textAlign: 'center',
   },
   infoContainer: {
     width: '95%',
-    backgroundColor: '#FFF',
-    padding: 6,
+    backgroundColor: '#262a5b',
+    padding: 10,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
     zIndex:-1,
+    borderWidth: 2,
+    borderColor: '#5C6BC0',
   },
   welcomeText: {
     fontSize: 24,
-    color: '#8A2BE2',
+    color: '#5C6BC0',
     fontWeight: 'bold',
     marginVertical: 10,
     textAlign: 'center',
   },
   description: {
     textAlign: 'center',
-    color: '#4B0082',
+    color: '#fff',
   },
   modulesContainer: {
     width: '90%',
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#4B0082',
+    color: '#5C6BC0',
     textAlign: 'center',
   },
 });

@@ -15,7 +15,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.topContainer}>
         <Image
-          source={require('../images/ress-tesh.png')}
+          source={require('../images/terapp.png')}
           style={styles.logo}
         />
       </View>
@@ -49,28 +49,31 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#E0E0E0',
   },
   topContainer: {
     height: 220,
-    backgroundColor: '#77c2fd',
+    backgroundColor: '#262a5b',
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 4,
-    borderBottomColor: '#7f00b2',
+    borderBottomColor: '#5C6BC0',
   },
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 30,
+    
   },
   outerContainer: {
-    backgroundColor: '#3B7BBF', // Azul
+    backgroundColor: '#262a5b', // Azul
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     width: '100%',
+    borderWidth: 2,
+    borderColor: '#5C6BC0',
   },
   logo: {
     width: 190,
@@ -78,13 +81,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   button: {
-    backgroundColor: '#00BFFF',
+    backgroundColor: '#5C6BC0',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#7f00b2',
+    borderColor: '#E0E0E0',
     width: '80%',
   },
   infoContainer: {
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   infoButton: {
-    backgroundColor: '#7f00b2',
+    backgroundColor: '#8E24AA',
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,

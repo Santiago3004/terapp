@@ -15,13 +15,13 @@ const TextInput: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   input: {
-    color: 'black',
+    color: '#fff',
     width: '80%',
     height: 40,
     borderLeftWidth: 0, // Sin borde izquierdo
     borderRightWidth: 0, // Sin borde derecho
     borderTopWidth: 0, // Sin borde superior
-    borderColor: '#8A2BE2',
+    borderColor: '#fff',
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,

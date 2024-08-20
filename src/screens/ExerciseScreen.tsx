@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     height: 150,
-    backgroundColor: '#77c2fd',
+    backgroundColor: '#262a5b',
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 4,
