@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
 import Button from '../components/Button';
@@ -16,8 +16,11 @@ type Props = {
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const handleLogin = async () => {
+    setLoading(true);
+
     try {
       const userCredential = await auth().signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
@@ -25,6 +28,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       if (!user.emailVerified) {
         Alert.alert('Verificación requerida', 'Por favor, verifica tu correo electrónico antes de iniciar sesión.');
         await auth().signOut();
+        setLoading(false);
         return;
       }
 
@@ -37,6 +41,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
         if (!userRole) {
           Alert.alert('Error', 'El rol del usuario no está definido');
+          setLoading(false)
           return;
         }
 
@@ -76,6 +81,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       }
 
       Alert.alert('Error', errorMessage);
+      setLoading(false);
     }
   };
 
@@ -117,6 +123,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             title="Iniciar sesión"
             onPress={handleLogin}
           />
+          {loading && <ActivityIndicator size="large" color="#8A2BE2" style={styles.loader} />}
 
           <View style={styles.footer}>
             <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   forgotPassword: {
-    color: '#8E24AA',
+    color: '#5C6BC0',
     fontSize: 14,
   },
   boton:{
@@ -190,6 +197,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E0E0E0',
     width: '80%',
+  },
+  loader:{
+    marginBottom: 10
   }
 });
 

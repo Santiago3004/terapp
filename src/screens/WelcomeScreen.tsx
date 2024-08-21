@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Animated }
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
+import auth from '@react-native-firebase/auth'; // Importa Firebase Auth
 
 type WelcomeScreenRouteProp = RouteProp<RootStackParamList, 'Welcome'>;
 type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
@@ -49,9 +50,17 @@ const WelcomeScreen: React.FC<Props> = ({ route, navigation }) => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await auth().signOut();
+      navigation.replace('Home'); 
+    } catch (error) {
+      console.error('Error al cerrar sesión: ', error);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Top Container */}
       <View style={styles.topContainer}>
         <View style={styles.headerContainer}>
           <Image 
@@ -64,14 +73,14 @@ const WelcomeScreen: React.FC<Props> = ({ route, navigation }) => {
         </View>
         {menuVisible && (
           <Animated.View style={[styles.menu, { height: menuHeight }]}>
-            <TouchableOpacity style={styles.menuItem} >
+            <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText} onPress={() => navigation.navigate('Profile')}>Mi cuenta</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} >
+            <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText} onPress={() => navigation.navigate('Register')}>Configuración</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} >
-              <Text style={styles.menuText}onPress={() => navigation.navigate('Home')}>Cerrar sesión</Text>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuText} onPress={handleLogout}>Cerrar sesión</Text>
             </TouchableOpacity>
           </Animated.View>
         )}

@@ -153,11 +153,6 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
     }
   };
 
-  const handleViewInfo = (usuario: Usuario) => {
-    setInfoUsuario(usuario);
-    setInfoModalVisible(true);
-  };
-
   const renderItem = ({ item }: { item: Usuario }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.nombres}</Text>
@@ -208,18 +203,21 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Nombres"
+                placeholderTextColor="#E0E0E0"
                 value={currentUsuario.nombres}
                 onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, nombres: text })}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Apellidos"
+                placeholderTextColor="#E0E0E0"
                 value={currentUsuario.apellidos}
                 onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, apellidos: text })}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Teléfono"
+                placeholderTextColor="#E0E0E0"
                 value={currentUsuario.telefono}
                 onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, telefono: text })}
                 keyboardType="phone-pad"
@@ -227,6 +225,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor="#E0E0E0"
                 value={currentUsuario.email}
                 onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, email: text })}
                 keyboardType="email-address"
@@ -298,16 +297,16 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Nombre del Ejercicio"
+                placeholderTextColor="#E0E0E0"
                 value={exerciseName}
                 onChangeText={setExerciseName}
               />
               <TextInput
-                style={[styles.input, styles.descriptionInput]}
+                style={styles.input}
                 placeholder="Descripción del Ejercicio"
+                placeholderTextColor="#E0E0E0"
                 value={exerciseDescription}
                 onChangeText={setExerciseDescription}
-                multiline
-                numberOfLines={4}
               />
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSaveExercise}>
@@ -335,18 +334,21 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Nombres"
+                placeholderTextColor="#E0E0E0"
                 value={nombres}
                 onChangeText={setNombres}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Apellidos"
+                placeholderTextColor="#E0E0E0"
                 value={apellidos}
                 onChangeText={setApellidos}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Teléfono"
+                placeholderTextColor="#E0E0E0"
                 value={telefono}
                 onChangeText={setTelefono}
                 keyboardType="phone-pad"
@@ -354,6 +356,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor="#E0E0E0"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -361,6 +364,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Contraseña"
+                placeholderTextColor="#E0E0E0"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
@@ -432,6 +436,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#262a5b',
     borderBottomWidth: 1,
     borderBottomColor: '#5C6BC0',
+    borderRadius: 3,
   },
   cell: {
     flex: 1,
@@ -440,22 +445,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   header: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-  },
-  actionButton: {
-    flex: 1,
-    marginHorizontal: 5,
-    padding: 8,
-    backgroundColor: '#003366',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#fff',
+    color:'#fff'
   },
   actionButton: {
     backgroundColor: '#5C6BC0',
@@ -466,7 +458,7 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
@@ -475,6 +467,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#262a5b',
     borderRadius: 10,
     padding: 20,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
   },
   row: {
     flexDirection: 'row',
@@ -485,69 +480,67 @@ const styles = StyleSheet.create({
   },
   infoModalView: {
     width: '80%',
-    backgroundColor: '#fff',
+    backgroundColor: '#262a5b',
     borderRadius: 10,
     padding: 20,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#003366',
-    marginBottom: 15,
+    marginBottom: 20,
+    color: '#E0E0E0',
   },
   input: {
     width: '100%',
     padding: 10,
-    marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#cccccc',
+    borderColor: '#E0E0E0',
     borderRadius: 5,
+    marginBottom: 10,
+    color:'#fff'
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: '100%',
   },
   button: {
     flex: 1,
-    marginHorizontal: 5,
-    paddingVertical: 10,
+    padding: 10,
     borderRadius: 5,
+    marginHorizontal: 5,
     alignItems: 'center',
   },
   saveButton: {
-    backgroundColor: '#003366',
+    backgroundColor: '#5C6BC0',
   },
   cancelButton: {
-    backgroundColor: '#f44336',
-  },
-  closeButton: {
-    backgroundColor: '#003366',
-    marginTop: 20,
+    backgroundColor: '#dc3545',
   },
   editButton: {
-    backgroundColor: '#ff9800',  // Color diferente para el botón de editar
-    marginTop: 20,
+    backgroundColor: '#5C6BC0',
+  },
+  closeButton: {
+    backgroundColor: '#6c757d',
   },
   infoTable: {
-    marginTop: 10,
+    marginBottom: 20,
   },
   infoRow: {
     flexDirection: 'row',
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    marginBottom: 10,
   },
   infoHeader: {
-    flex: 1,
     fontWeight: 'bold',
-    color: '#003366',
-    
+    width: 100,
+    color:'#E0E0E0'
   },
   infoCell: {
-    flex: 2,
-    color: '#333',
-    textAlign: 'center', // Centra el texto horizontalmente
-  }
+    flex: 1,
+    color: '#5C6BC0',
+  },
 });
 
 export default FisioterapeutaHome;
