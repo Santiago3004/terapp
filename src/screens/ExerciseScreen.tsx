@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import axios from 'axios';
 
 const exercises = [
   { name: 'Ejercicio 1', image: require('../images/tobillo.png') },
@@ -22,6 +23,42 @@ const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setSelectedExercises(newSelectedExercises);
   };
 
+  const handleSave = async () => {
+    const selectedExerciseData = exercises
+      .filter((_, index) => selectedExercises[index])
+      .map(exercise => ({
+        Nombre_Ejerc: exercise.name,
+        Diagnostico: '',  // Puedes reemplazar con el diagnóstico real si se requiere
+        Ejercicio: ''     // Puedes reemplazar con los detalles del ejercicio real si se requiere
+      }));
+
+    if (selectedExerciseData.length === 0) {
+      Alert.alert('No se han seleccionado ejercicios');
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:3000/saveExercise', selectedExerciseData); // Asegúrate de usar la URL correcta
+      Alert.alert('Ejercicios guardados exitosamente');
+      navigation.goBack();
+    } catch (error) {
+      Alert.alert('Error al guardar los ejercicios');
+      console.error(error);
+    }
+  };
+
+  const renderItem = ({ item, index }: { item: { name: string, image: any }, index: number }) => (
+    <View style={styles.exercise}>
+      <Image source={item.image} style={styles.exerciseImage} />
+      <Text style={styles.exerciseText}>{item.name}</Text>
+      <CheckBox
+        value={selectedExercises[index]}
+        onValueChange={() => toggleCheckbox(index)}
+        tintColors={{ true: '#7f00b2', false: '#7f00b2' }} 
+      />
+    </View>
+  );
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.topContainer}>
@@ -31,19 +68,15 @@ const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         <Image source={require('../images/terapp.png')} style={styles.logo} />
       </View>
       <Text style={styles.title}>EJERCICIOS</Text>
-      <View style={styles.exercisesContainer}>
-        {exercises.map((exercise, index) => (
-          <View key={index} style={styles.exercise}>
-            <Image source={exercise.image} style={styles.exerciseImage} />
-            <Text style={styles.exerciseText}>{exercise.name}</Text>
-            <CheckBox
-              value={selectedExercises[index]}
-              onValueChange={() => toggleCheckbox(index)}
-              tintColors={{ true: '#7f00b2', false: '#7f00b2' }} // Cambio de color del checkbox a morado
-            />
-          </View>
-        ))}
-      </View>
+      <FlatList
+        data={exercises}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.exercisesContainer}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <Text style={styles.buttonText}>Guardar</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -61,7 +94,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 4,
     borderBottomColor: '#7f00b2',
     marginBottom: 20,
-    position: 'relative', // Asegúrate de que el contenedor de la flecha esté en la parte superior
+    position: 'relative',
   },
   closeButton: {
     position: 'absolute',
@@ -71,7 +104,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     fontSize: 35,
-    color: '#7f00b2', // Color de la flecha
+    color: '#7f00b2',
     fontWeight: 'bold',
   },
   logo: {
@@ -107,7 +140,20 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     fontSize: 16,
-    color: '#7f00b2', // Cambio de color a morado
+    color: '#7f00b2',
+  },
+  button: {
+    backgroundColor: '#7f00b2',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    margin: 20,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

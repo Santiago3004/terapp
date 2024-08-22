@@ -11,6 +11,7 @@ import ExerciseScreen from '../screens/ExerciseScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FisioterapeutaHome from '../screens/FisioterapeutaHome';
 import CentroSaludHome from '../screens/CentroSaludHome';
+import ExerciseModulesScreen from '../screens/ExerciseModulesScreen';
 import firestore from '@react-native-firebase/firestore';
 
 export type RootStackParamList = {
@@ -19,10 +20,11 @@ export type RootStackParamList = {
   Register: undefined;
   ForgotPassword: undefined;
   Welcome: { userName: string };
-  Exercise: undefined;
+  Exercise: { moduleName: string };
   Profile: undefined;
   Fisioterapeuta: { userName: string };
   CentroSalud: { userName: string };
+  ExerciseModules: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -62,9 +64,61 @@ const App: React.FC = () => {
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Fisioterapeuta" component={FisioterapeutaHome} />
         <Stack.Screen name="CentroSalud" component={CentroSaludHome} />
+        <Stack.Screen name="ExerciseModules" component={ExerciseModulesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default App;
+
+
+/* import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
+import ExerciseScreen from '../screens/ExerciseScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import FisioterapeutaHome from '../screens/FisioterapeutaHome';
+import CentroSaludHome from '../screens/CentroSaludHome';
+import ExerciseModulesScreen from '../screens/ExerciseModulesScreen'; // Asegúrate de importar correctamente
+
+export type RootStackParamList = {
+  Home: undefined;
+  Login: { reset?: boolean };
+  Register: undefined;
+  ForgotPassword: undefined;
+  Welcome: { userName: string };
+  Exercise: undefined;
+  ExerciseModules: undefined; // Asegúrate de definir correctamente aquí
+  Profile: undefined;
+  Fisioterapeuta: { userName: string };
+  CentroSalud: { userName: string };
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+const App: React.FC = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Exercise" component={ExerciseScreen} />
+        <Stack.Screen name="ExerciseModules" component={ExerciseModulesScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Fisioterapeuta" component={FisioterapeutaHome} />
+        <Stack.Screen name="CentroSalud" component={CentroSaludHome} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App; */

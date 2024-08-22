@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import styles from '../CSS/LoginCss'
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -19,6 +20,21 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      let errorMessage = '';
+
+      if (!email && !password) {
+        errorMessage = 'Por favor, ingresa tu correo electrónico y contraseña.';
+      } else if (!email) {
+        errorMessage = 'Por favor, ingresa tu correo electrónico.';
+      } else if (!password) {
+        errorMessage = 'Por favor, ingresa tu contraseña.';
+      }
+
+      Alert.alert('Campos requeridos', errorMessage);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -118,12 +134,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             value={password}
           />
           
-          <Button
+          <TouchableOpacity
             style={styles.boton}
-            title="Iniciar sesión"
             onPress={handleLogin}
-          />
-          {loading && <ActivityIndicator size="large" color="#8A2BE2" style={styles.loader} />}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size="large" color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Iniciar sesión</Text>
+            )}
+          </TouchableOpacity>
+          
 
           <View style={styles.footer}>
             <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
@@ -136,71 +158,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  topContainer: {
-    height: 250,
-    backgroundColor: '#262a5b',
-    justifyContent: 'center',
-    borderBottomWidth: 4,
-    borderBottomColor: '#5C6BC0',
-  },
-  bottomContainer: {
-    flex: 1,
-    backgroundColor: '#E0E0E0',
-    paddingTop: 80,
-    paddingHorizontal: 30,
-  },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logo: {
-    width: 280,
-    height: 280,
-    resizeMode: 'contain',
-  },
-  formContainer: {
-    width: '100%',
-    backgroundColor: '#262a5b',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-    borderWidth: 3,
-    borderColor: '#5C6BC0',
-  },
-  loginTitle: {
-    fontSize: 24,
-    color: '#fff',
-    marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  footer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    marginTop: 1,
-  },
-  forgotPassword: {
-    color: '#5C6BC0',
-    fontSize: 14,
-  },
-  boton:{
-    backgroundColor: '#5C6BC0',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    width: '80%',
-  },
-  loader:{
-    marginBottom: 10
-  }
-});
+
 
 export default LoginScreen;
