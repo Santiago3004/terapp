@@ -18,6 +18,7 @@ const exercises = [
   { name: 'Teraband plantiflexión', image: require('../images/tobillo.png') },
 ];
 
+
 const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const handleStartExercise = (exerciseName: string) => {
     Alert.alert(`Comenzando ${exerciseName}`);
@@ -48,9 +49,22 @@ const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
           <Text style={styles.closeButtonText}>←</Text>
         </TouchableOpacity>
-        <Image source={require('../images/terapp.png')} style={styles.logo} />
+        <View style={styles.headerContainer}>
+          <Image
+            source={require('../images/terapp.png')}
+            style={styles.logo}
+          />
+        </View>
       </View>
-      <Text style={styles.title}>EJERCICIOS</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.welcomeText}>Ejercicios!</Text>
+        <Text style={styles.description}>
+          Elige la parte de tu cuerpo donde tengas la lesión. Te vamos a acompañar en tu recuperación para que te mejores de una manera más efectiva y rápida.
+        </Text>
+      </View>
+
+
+      
       <FlatList
         data={exercises}
         renderItem={renderItem}

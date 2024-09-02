@@ -1,12 +1,14 @@
 import { StyleSheet } from "react-native";
 
 const ExerciseCss = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        backgroundColor: '#E0E0E0',
-      },
+  container: {
+    flexGrow: 1,
+    alignItems: 'center', // Centra horizontalmente todos los elementos hijos
+    backgroundColor: '#f8f8f8', // Asegúrate de que haya un color de fondo adecuado
+  },
       topContainer: {
         height: 150,
+        width: '100%',
         backgroundColor: '#262a5b',
         justifyContent: 'center',
         alignItems: 'center',
@@ -14,6 +16,34 @@ const ExerciseCss = StyleSheet.create({
         borderBottomColor: '#5C6BC0',
         marginBottom: 20,
         position: 'relative',
+      },
+      headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+      },
+      infoContainer: {
+        width: '95%',
+        backgroundColor: '#262a5b',
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 20,
+        zIndex:-1,
+        borderWidth: 2,
+        borderColor: '#5C6BC0',
+      },
+      welcomeText: {
+        fontSize: 24,
+        color: '#5C6BC0',
+        fontWeight: 'bold',
+        marginVertical: 10,
+        textAlign: 'center',
+      },
+      description: {
+        textAlign: 'center',
+        color: '#fff',
       },
       startButton: {
         backgroundColor: '#7f00b2',

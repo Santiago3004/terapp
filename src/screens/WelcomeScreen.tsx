@@ -90,23 +90,7 @@ const WelcomeScreen: React.FC<Props> = ({ route ,navigation}) => {
             source={require('../images/terapp.png')}
             style={styles.logo}
           />
-          <TouchableOpacity style={styles.iconContainer} onPress={toggleMenu}>
-            <Text style={styles.menuIcon}>≡</Text>
-          </TouchableOpacity>
         </View>
-        {menuVisible && (
-          <Animated.View style={[styles.menu, { height: menuHeight }]}>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuText} onPress={() => navigation.navigate('Profile')}>Mi cuenta</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuText} onPress={() => navigation.navigate('Register')}>Configuración</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuText} onPress={handleLogout}>Cerrar sesión</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        )}
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.welcomeText}>Bienvenido, {userName}!</Text>
