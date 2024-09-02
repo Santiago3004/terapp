@@ -111,7 +111,6 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
   const handleSaveExercise = async () => {
     if (currentUsuario) {
       try {
-        // Aquí deberías guardar el ejercicio en la base de datos o hacer lo necesario con la información del ejercicio
         console.log('Ejercicio Guardado:', { exerciseName, exerciseDescription });
         setExerciseModalVisible(false);
         setExerciseName('');
@@ -160,7 +159,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
         <Text style={styles.buttonText}>Agregar Ejercicio</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.actionButton} onPress={() => handleViewInfo(item)}>
-        <Text style={styles.buttonText}>Ver Información</Text>
+        <Text style={styles.buttonText}>Ver Información</Text> 
       </TouchableOpacity>
     </View>
   );

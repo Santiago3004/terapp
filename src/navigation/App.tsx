@@ -11,7 +11,6 @@ import ExerciseScreen from '../screens/ExerciseScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FisioterapeutaHome from '../screens/FisioterapeutaHome';
 import CentroSaludHome from '../screens/CentroSaludHome';
-import ExerciseModulesScreen from '../screens/ExerciseModulesScreen';
 import firestore from '@react-native-firebase/firestore';
 
 export type RootStackParamList = {
@@ -24,7 +23,6 @@ export type RootStackParamList = {
   Profile: undefined;
   Fisioterapeuta: { userName: string };
   CentroSalud: { userName: string };
-  ExerciseModules: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -64,7 +62,6 @@ const App: React.FC = () => {
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Fisioterapeuta" component={FisioterapeutaHome} />
         <Stack.Screen name="CentroSalud" component={CentroSaludHome} />
-        <Stack.Screen name="ExerciseModules" component={ExerciseModulesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
