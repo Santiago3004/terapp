@@ -25,7 +25,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.outerContainer}>
           <Button
             title="INICIAR SESIÓN"
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('Login',{})}
             style={styles.button}
           />
           <View style={styles.infoContainer}>
@@ -45,7 +45,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       />
     </View>
   );
-};
+};  
 
 
 

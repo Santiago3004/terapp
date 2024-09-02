@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
+import styles from '../CSS/ExerciseModulesCss';
 
 type ExerciseModulesScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ExerciseModules'>;
 
@@ -31,11 +32,14 @@ const ExerciseModulesScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.topContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>←</Text>
+        <View style={styles.headerContainer}>
+        <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.closeButtonText}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Módulos de Ejercicios</Text>
+        <Image source={require('../images/terapp.png')} style={styles.logo} />
+        </View>
       </View>
+      <Text style={styles.title}>Módulos</Text>
       <View style={styles.modulesContainer}>
         {modules.map((module, index) => (
           <View key={index} style={styles.module}>
@@ -51,7 +55,7 @@ const ExerciseModulesScreen: React.FC<Props> = ({ navigation }) => {
               style={styles.button}
               onPress={() => handlePress(module.name)}
             >
-              <Text style={styles.buttonText}>Ver Ejercicios</Text>
+              <Text style={styles.buttonText}>Agregar</Text>
             </TouchableOpacity>
           </View>
         ))}
@@ -59,68 +63,5 @@ const ExerciseModulesScreen: React.FC<Props> = ({ navigation }) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: '#ADD8E6',
-    paddingHorizontal: 10,
-  },
-  topContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 20,
-  },
-  backButton: {
-    position: 'absolute',
-    left: 10,
-    padding: 10,
-  },
-  backButtonText: {
-    fontSize: 35,
-    color: '#7f00b2',
-    fontWeight: 'bold',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#7f00b2',
-  },
-  modulesContainer: {
-    paddingHorizontal: 6,
-  },
-  module: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FBF6F5',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  moduleImage: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-  },
-  moduleText: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#7f00b2',
-  },
-  button: {
-    backgroundColor: '#7f00b2',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
 
 export default ExerciseModulesScreen;

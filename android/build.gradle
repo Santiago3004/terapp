@@ -21,6 +21,11 @@ buildscript {
 
 apply plugin: "com.facebook.react.rootproject"
 
+
+project.ext.react = [
+    enableHermes: true,  // <- aquí | false si deseas deshabilitarlo
+]
+
 allprojects {
     repositories {
         mavenCentral()

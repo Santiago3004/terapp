@@ -4,6 +4,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import TextInput from '../components/TextInput';
+import styles from '../CSS/LoginCss';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -12,7 +14,7 @@ type Props = {
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState(''); 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +61,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         }
 
         if (userRole === 'paciente') {
-          navigation.navigate('Welcome', { userName });
+          navigation.navigate('TabNavigator', { userName: userName });
         } else if (userRole === 'fisioterapeuta') {
           navigation.navigate('Fisioterapeuta', { userName });
         } else {
@@ -71,13 +73,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     } catch (err: any) {
       console.error('Error al iniciar sesión:', err);
 
-      let errorMessage
+      let errorMessage = 'Error Desconocido. Por favor, intenta nuevamente'
 
-      // Verifica si `err` tiene un código de error
+      // Verifica si err tiene un código de error
       if (err && err.code) {
-        // Imprime `err.code` para depuración
+        // Imprime err.code para depuración
         console.log('Código de error:', err.code);
-
         switch (err.code) {
           case 'auth/user-not-found':
             errorMessage = 'Usuario no encontrado. Por favor, verifica el correo electrónico.';
@@ -98,7 +99,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             errorMessage = 'Demasiados intentos fallidos. Intenta nuevamente más tarde.';
             break;
           default:
-            errorMessage = 'Error desconocido. Por favor, intenta nuevamente.';
+            errorMessage = 'Contraseña incorrecta. Verifica que la contraseña sea correcta.';
             break;
         }
       } else {
@@ -116,8 +117,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.topContainer}>
         <View style={styles.headerContainer}>
-          <Image 
-            source={require('../images/terapp.png')} 
+          <Image
+            source={require('../images/terapp.png')}
             style={styles.logo}
           />
         </View>
@@ -125,7 +126,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.bottomContainer}>
         <View style={styles.formContainer}>
           <Text style={styles.loginTitle}>Iniciar sesión</Text>
-          
+
           <TextInput
             placeholder="Email"
             placeholderTextColor="#fff"
@@ -144,13 +145,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             onChangeText={setPassword}
             value={password}
           />
-          
-          <Button
+
+          <TouchableOpacity
             style={styles.boton}
-            title="Iniciar sesión"
             onPress={handleLogin}
-          />
-          {loading && <ActivityIndicator size="large" color="#8A2BE2" style={styles.loader} />}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size="large" color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Iniciar sesión</Text>
+            )}
+          </TouchableOpacity>
 
           <View style={styles.footer}>
             <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
@@ -162,72 +168,5 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  topContainer: {
-    height: 250,
-    backgroundColor: '#262a5b',
-    justifyContent: 'center',
-    borderBottomWidth: 4,
-    borderBottomColor: '#5C6BC0',
-  },
-  bottomContainer: {
-    flex: 1,
-    backgroundColor: '#E0E0E0',
-    paddingTop: 80,
-    paddingHorizontal: 30,
-  },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logo: {
-    width: 280,
-    height: 280,
-    resizeMode: 'contain',
-  },
-  formContainer: {
-    width: '100%',
-    backgroundColor: '#262a5b',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-    borderWidth: 3,
-    borderColor: '#5C6BC0',
-  },
-  loginTitle: {
-    fontSize: 24,
-    color: '#fff',
-    marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  footer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    marginTop: 1,
-  },
-  forgotPassword: {
-    color: '#5C6BC0',
-    fontSize: 14,
-  },
-  boton:{
-    backgroundColor: '#5C6BC0',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    width: '80%',
-  },
-  loader:{
-    marginBottom: 10
-  }
-});
 
 export default LoginScreen;

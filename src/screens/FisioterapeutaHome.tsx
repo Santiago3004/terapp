@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, Modal, Alert, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect, useRef} from 'react';
+import { View, Text, FlatList, TextInput, Modal, Alert, TouchableOpacity, ScrollView, Image, Animated } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
-import styles from '../CSS/FisioterapeutaCss'
+import styles from '../CSS/FisioterapeutaCss';
 
 type FisioterapeutaHomeRouteProp = RouteProp<RootStackParamList, 'Fisioterapeuta'>;
 type FisioterapeutaHomeNavigationProp = StackNavigationProp<RootStackParamList, 'Fisioterapeuta'>;
@@ -24,16 +24,13 @@ interface Usuario {
   rol: string;
 }
 
-const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
+const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
-  const [exerciseModalVisible, setExerciseModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [currentUsuario, setCurrentUsuario] = useState<Usuario | null>(null);
   const [infoUsuario, setInfoUsuario] = useState<Usuario | null>(null);
-  const [exerciseName, setExerciseName] = useState('');
-  const [exerciseDescription, setExerciseDescription] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,7 +39,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
   const [telefono, setTelefono] = useState('');
   const [rol, setRol] = useState('paciente');
 
-  const { userName } = route.params;
+  const { userName } = route.params || {};
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -53,7 +50,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
           .get();
         const usuariosList: Usuario[] = usuariosSnapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         })) as Usuario[];
         setUsuarios(usuariosList);
       } catch (err) {
@@ -82,7 +79,9 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
             email: currentUsuario.email,
           });
         setUsuarios(prevUsuarios =>
-          prevUsuarios.map(user => user.id === currentUsuario.id ? currentUsuario : user)
+          prevUsuarios.map(user =>
+            user.id === currentUsuario.id ? currentUsuario : user
+          )
         );
         setModalVisible(false);
       } catch (err) {
@@ -108,29 +107,13 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
     }
   };
 
-  const handleSaveExercise = async () => {
-    if (currentUsuario) {
-      try {
-        console.log('Ejercicio Guardado:', { exerciseName, exerciseDescription });
-        setExerciseModalVisible(false);
-        setExerciseName('');
-        setExerciseDescription('');
-        Alert.alert('Éxito', 'Ejercicio agregado correctamente');
-      } catch (err) {
-        console.error('Error al guardar ejercicio:', err);
-      }
-    }
-  };
-
   const handleRegister = async () => {
     try {
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
-      // Enviar correo de verificación
       await user.sendEmailVerification();
 
-      // Guardar datos adicionales en Firestore
       await firestore().collection('Usuarios').doc(user.uid).set({
         nombres,
         apellidos,
@@ -159,131 +142,175 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
         <Text style={styles.buttonText}>Agregar Ejercicio</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.actionButton} onPress={() => handleViewInfo(item)}>
-        <Text style={styles.buttonText}>Ver Información</Text> 
+        <Text style={styles.buttonText}>Ver Información</Text>
       </TouchableOpacity>
     </View>
   );
 
+const [menuVisible, setMenuVisible] = useState(false);
+const menuHeight = useRef(new Animated.Value(0)).current;
+
+const toggleMenu = () => {
+  if (menuVisible) {
+    Animated.timing(menuHeight, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => setMenuVisible(false));
+  } else {
+    setMenuVisible(true);
+    Animated.timing(menuHeight, {
+      toValue: 120,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }
+};
+
+const handleLogout = async () => {
+  try {
+    await auth().signOut();
+    navigation.replace('Home');
+  } catch (error) {
+    console.error('Error al cerrar sesión: ', error);
+  }
+};
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    <View style={styles.topContainer}>
-      <Image
-         source={require('../images/terapp.png')}
-         style={styles.logo}
-       />
-    </View>
-    <View style={styles.infoContainer}>
-      <Text style={styles.title}>Bienvenido Fisioterapeuta, {userName}</Text>
-      <TouchableOpacity style={styles.addButton} onPress={() => setRegisterModalVisible(true)}>
-        <Text style={styles.buttonText}>Agregar Paciente</Text>
+      <View style={styles.topContainer}>
+  <Image
+    source={require('../images/terapp.png')}
+    style={styles.logo}
+  />
+  <TouchableOpacity style={styles.iconContainer} onPress={toggleMenu}>
+    <Text style={styles.menuIcon}>≡</Text> 
+  </TouchableOpacity>
+  {menuVisible && (
+    <Animated.View style={[styles.menu, { height: menuHeight }]}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Profile')}>
+        <Text style={styles.menuText}>Mi cuenta</Text>
       </TouchableOpacity>
-      <View style={styles.table}>
-        <View style={styles.headerRow}>
-          <Text style={[styles.cell, styles.header]}>Nombre</Text>
-          <Text style={[styles.cell, styles.header]}>Acciones</Text>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.menuText}>Configuración</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+        <Text style={styles.menuText}>Cerrar sesión</Text>
+      </TouchableOpacity>
+    </Animated.View>
+  )}
+</View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>Bienvenido Fisioterapeuta, {userName}</Text>
+        <TouchableOpacity style={styles.addButton} onPress={() => setRegisterModalVisible(true)}>
+          <Text style={styles.buttonText}>Agregar Paciente</Text>
+        </TouchableOpacity>
+        <View style={styles.table}>
+          <View style={styles.headerRow}>
+            <Text style={[styles.cell, styles.header]}>Nombre</Text>
+            <Text style={[styles.cell, styles.header]}>Acciones</Text>
+          </View>
+          <FlatList
+            data={usuarios}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
         </View>
-        <FlatList
-          data={usuarios}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
 
-      {currentUsuario && (
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalBackground}>
-            <ScrollView contentContainerStyle={styles.modalView}>
-              <Text style={styles.modalTitle}>Editar Usuario</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Nombres"
-                placeholderTextColor="#E0E0E0"
-                value={currentUsuario.nombres}
-                onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, nombres: text })}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Apellidos"
-                placeholderTextColor="#E0E0E0"
-                value={currentUsuario.apellidos}
-                onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, apellidos: text })}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Teléfono"
-                placeholderTextColor="#E0E0E0"
-                value={currentUsuario.telefono}
-                onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, telefono: text })}
-                keyboardType="phone-pad"
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#E0E0E0"
-                value={currentUsuario.email}
-                onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, email: text })}
-                keyboardType="email-address"
-              />
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
-                  <Text style={styles.buttonText}>Guardar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                  <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
-        </Modal>
-      )}
+        {currentUsuario && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalBackground}>
+              <ScrollView contentContainerStyle={styles.modalView}>
+                <Text style={styles.modalTitle}>Editar Usuario</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Nombres"
+                  placeholderTextColor="#E0E0E0"
+                  value={currentUsuario.nombres}
+                  onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, nombres: text })}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Apellidos"
+                  placeholderTextColor="#E0E0E0"
+                  value={currentUsuario.apellidos}
+                  onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, apellidos: text })}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Teléfono"
+                  placeholderTextColor="#E0E0E0"
+                  value={currentUsuario.telefono}
+                  onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, telefono: text })}
+                  keyboardType="phone-pad"
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  placeholderTextColor="#E0E0E0"
+                  value={currentUsuario.email}
+                  onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, email: text })}
+                  keyboardType="email-address"
+                />
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
+                    <Text style={styles.buttonText}>Guardar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </View>
+          </Modal>
+        )}
 
-      {infoUsuario && (
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={infoModalVisible}
-          onRequestClose={() => setInfoModalVisible(false)}
-        >
-          <View style={styles.modalBackground}>
-            <ScrollView contentContainerStyle={styles.infoModalView}>
-              <Text style={styles.modalTitle}>Información del Paciente</Text>
-              <View style={styles.infoTable}>
-                <View style={styles.infoRow}>
-                  <Text style={styles.infoHeader}>Nombres:</Text>
-                  <Text style={styles.infoCell}>{infoUsuario.nombres}</Text>
+        {infoUsuario && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={infoModalVisible}
+            onRequestClose={() => setInfoModalVisible(false)}
+          >
+            <View style={styles.modalBackground}>
+              <ScrollView contentContainerStyle={styles.infoModalView}>
+                <Text style={styles.modalTitle}>Información del Paciente</Text>
+                <View style={styles.infoTable}>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoHeader}>Nombres:</Text>
+                    <Text style={styles.infoCell}>{infoUsuario.nombres}</Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoHeader}>Apellidos:</Text>
+                    <Text style={styles.infoCell}>{infoUsuario.apellidos}</Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoHeader}>Teléfono:</Text>
+                    <Text style={styles.infoCell}>{infoUsuario.telefono}</Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoHeader}>Email:</Text>
+                    <Text style={styles.infoCell}>{infoUsuario.email}</Text>
+                  </View>
                 </View>
-                <View style={styles.infoRow}>
-                  <Text style={styles.infoHeader}>Apellidos:</Text>
-                  <Text style={styles.infoCell}>{infoUsuario.apellidos}</Text>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEditInfo}>
+                    <Text style={styles.buttonText}>Editar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setInfoModalVisible(false)}>
+                    <Text style={styles.buttonText}>Cerrar</Text>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.infoRow}>
-                  <Text style={styles.infoHeader}>Teléfono:</Text>
-                  <Text style={styles.infoCell}>{infoUsuario.telefono}</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <Text style={styles.infoHeader}>Email:</Text>
-                  <Text style={styles.infoCell}>{infoUsuario.email}</Text>
-                </View>
-              </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEditInfo}>
-                  <Text style={styles.buttonText}>Editar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.closeButton]} onPress={() => setInfoModalVisible(false)}>
-                  <Text style={styles.buttonText}>Cerrar</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
-        </Modal>
-      )}
+              </ScrollView>
+            </View>
+          </Modal>
+        )}
 
-      {registerModalVisible && (
         <Modal
           animationType="slide"
           transparent={true}
@@ -292,7 +319,7 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
         >
           <View style={styles.modalBackground}>
             <ScrollView contentContainerStyle={styles.modalView}>
-              <Text style={styles.modalTitle}>Registrar Paciente</Text>
+              <Text style={styles.modalTitle}>Registrar Nuevo Paciente</Text>
               <TextInput
                 style={styles.input}
                 placeholder="Nombres"
@@ -342,12 +369,9 @@ const FisioterapeutaHome: React.FC<Props> = ({route, navigation}) => {
             </ScrollView>
           </View>
         </Modal>
-      )}
-    </View>
-  </ScrollView>
+      </View>
+    </ScrollView>
   );
 };
 
-
 export default FisioterapeutaHome;
-
