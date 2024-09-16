@@ -11,18 +11,25 @@ import FisioterapeutaHome from '../screens/FisioterapeutaHome';
 import ExerciseModulesScreen from '../screens/ExerciseModulesScreen';
 import TabNavigator from './TabNavigation'; 
 import WelcomeScreen from '../screens/WelcomeScreen';
+import AssignedExercisesScreen from '../screens/AssignedExercisesScreen'; 
+
+export interface ExcerciseType {
+  id: number,
+  name: string
+}
 
 export type RootStackParamList = {
   Home: undefined;
   Login: { reset?: boolean };
   Welcome: { userName: string };
   Fisioterapeuta: { userName: string };
-  Exercise: { moduleName: string };
+  Exercise: { moduleName: string, exercises: ExcerciseType[] };
   Register: undefined;
   ForgotPassword: undefined;
   ExerciseModules: undefined;
   TabNavigator: undefined;
   Profile: undefined;
+  AssignedExercises: { moduleName: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -39,6 +46,8 @@ const App: React.FC = () => {
         <Stack.Screen name="ExerciseModules" component={ExerciseModulesScreen} />
         <Stack.Screen name="Fisioterapeuta" component={FisioterapeutaHome} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="AssignedExercises" component={AssignedExercisesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

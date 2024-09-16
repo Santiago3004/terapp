@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, FlatList, TextInput, Modal, Alert, TouchableOpacity, ScrollView, Image, Animated } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -38,6 +38,7 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
   const [apellidos, setApellidos] = useState('');
   const [telefono, setTelefono] = useState('');
   const [rol, setRol] = useState('paciente');
+  const [loading, setLoading] = useState(false);
 
   const { userName } = route.params || {};
 
@@ -67,6 +68,7 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     if (currentUsuario) {
       try {
         await firestore()
@@ -83,14 +85,16 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
             user.id === currentUsuario.id ? currentUsuario : user
           )
         );
+        setLoading(false);
         setModalVisible(false);
       } catch (err) {
         console.error('Error al actualizar usuario:', err);
+        setLoading(false);
       }
     }
   };
 
-  const handleAddExercise = () => {
+  const handleAddExercise = (moduleName: string) => {
     navigation.navigate('ExerciseModules');
   };
 
@@ -108,6 +112,12 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
   };
 
   const handleRegister = async () => {
+    if (!nombres || !apellidos || !telefono || !email || !password) {
+      Alert.alert('Ups!', 'Todos los campos son requeridos.');
+      return;
+    }
+
+    setLoading(true);
     try {
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
@@ -129,16 +139,19 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
       setNombres('');
       setApellidos('');
       setTelefono('');
+
+      setLoading(false);
     } catch (error) {
       console.error('Error al registrar:', error);
       Alert.alert('Error', 'Error al registrar usuario. Por favor, verifica los datos ingresados.');
+      setLoading(false);
     }
   };
 
   const renderItem = ({ item }: { item: Usuario }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.nombres}</Text>
-      <TouchableOpacity style={styles.actionButton} onPress={() => handleAddExercise()}>
+      <TouchableOpacity style={styles.actionButton} onPress={() => handleAddExercise('Tobillo')}>
         <Text style={styles.buttonText}>Agregar Ejercicio</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.actionButton} onPress={() => handleViewInfo(item)}>
@@ -147,59 +160,59 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
     </View>
   );
 
-const [menuVisible, setMenuVisible] = useState(false);
-const menuHeight = useRef(new Animated.Value(0)).current;
+  const [menuVisible, setMenuVisible] = useState(false);
+  const menuHeight = useRef(new Animated.Value(0)).current;
 
-const toggleMenu = () => {
-  if (menuVisible) {
-    Animated.timing(menuHeight, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start(() => setMenuVisible(false));
-  } else {
-    setMenuVisible(true);
-    Animated.timing(menuHeight, {
-      toValue: 120,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }
-};
+  const toggleMenu = () => {
+    if (menuVisible) {
+      Animated.timing(menuHeight, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => setMenuVisible(false));
+    } else {
+      setMenuVisible(true);
+      Animated.timing(menuHeight, {
+        toValue: 120,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
 
-const handleLogout = async () => {
-  try {
-    await auth().signOut();
-    navigation.replace('Home');
-  } catch (error) {
-    console.error('Error al cerrar sesión: ', error);
-  }
-};
+  const handleLogout = async () => {
+    try {
+      await auth().signOut();
+      navigation.replace('Home');
+    } catch (error) {
+      console.error('Error al cerrar sesión: ', error);
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.topContainer}>
-  <Image
-    source={require('../images/terapp.png')}
-    style={styles.logo}
-  />
-  <TouchableOpacity style={styles.iconContainer} onPress={toggleMenu}>
-    <Text style={styles.menuIcon}>≡</Text> 
-  </TouchableOpacity>
-  {menuVisible && (
-    <Animated.View style={[styles.menu, { height: menuHeight }]}>
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Profile')}>
-        <Text style={styles.menuText}>Mi cuenta</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.menuText}>Configuración</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
-        <Text style={styles.menuText}>Cerrar sesión</Text>
-      </TouchableOpacity>
-    </Animated.View>
-  )}
-</View>
+        <Image
+          source={require('../images/terapp.png')}
+          style={styles.logo}
+        />
+        <TouchableOpacity style={styles.iconContainer} onPress={toggleMenu}>
+          <Text style={styles.menuIcon}>≡</Text> 
+        </TouchableOpacity>
+        {menuVisible && (
+          <Animated.View style={[styles.menu, { height: menuHeight }]}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Profile')}>
+              <Text style={styles.menuText}>Mi cuenta</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Register')}>
+              <Text style={styles.menuText}>Configuración</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+              <Text style={styles.menuText}>Cerrar sesión</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
       <View style={styles.infoContainer}>
         <Text style={styles.title}>Bienvenido Fisioterapeuta, {userName}</Text>
         <TouchableOpacity style={styles.addButton} onPress={() => setRegisterModalVisible(true)}>
@@ -218,7 +231,7 @@ const handleLogout = async () => {
         </View>
 
         {currentUsuario && (
-          <Modal
+          <Modal 
             animationType="slide"
             transparent={true}
             visible={modalVisible}
@@ -247,7 +260,6 @@ const handleLogout = async () => {
                   placeholderTextColor="#E0E0E0"
                   value={currentUsuario.telefono}
                   onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, telefono: text })}
-                  keyboardType="phone-pad"
                 />
                 <TextInput
                   style={styles.input}
@@ -255,57 +267,49 @@ const handleLogout = async () => {
                   placeholderTextColor="#E0E0E0"
                   value={currentUsuario.email}
                   onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, email: text })}
-                  keyboardType="email-address"
                 />
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
-                    <Text style={styles.buttonText}>Guardar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSave}
+                >
+                  <Text style={styles.buttonText}>{loading ? 'Guardando...' : 'Guardar Cambios'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
               </ScrollView>
             </View>
           </Modal>
         )}
 
         {infoUsuario && (
-          <Modal
+          <Modal 
             animationType="slide"
             transparent={true}
             visible={infoModalVisible}
             onRequestClose={() => setInfoModalVisible(false)}
           >
             <View style={styles.modalBackground}>
-              <ScrollView contentContainerStyle={styles.infoModalView}>
-                <Text style={styles.modalTitle}>Información del Paciente</Text>
-                <View style={styles.infoTable}>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoHeader}>Nombres:</Text>
-                    <Text style={styles.infoCell}>{infoUsuario.nombres}</Text>
-                  </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoHeader}>Apellidos:</Text>
-                    <Text style={styles.infoCell}>{infoUsuario.apellidos}</Text>
-                  </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoHeader}>Teléfono:</Text>
-                    <Text style={styles.infoCell}>{infoUsuario.telefono}</Text>
-                  </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoHeader}>Email:</Text>
-                    <Text style={styles.infoCell}>{infoUsuario.email}</Text>
-                  </View>
-                </View>
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEditInfo}>
-                    <Text style={styles.buttonText}>Editar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setInfoModalVisible(false)}>
-                    <Text style={styles.buttonText}>Cerrar</Text>
-                  </TouchableOpacity>
-                </View>
+              <ScrollView contentContainerStyle={styles.modalView}>
+                <Text style={styles.modalTitle}>Información del Usuario</Text>
+                <Text style={styles.infoText}>Nombre: {infoUsuario.nombres} {infoUsuario.apellidos}</Text>
+                <Text style={styles.infoText}>Teléfono: {infoUsuario.telefono}</Text>
+                <Text style={styles.infoText}>Email: {infoUsuario.email}</Text>
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={handleEditInfo}
+                >
+                  <Text style={styles.buttonText}>Editar Información</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={() => setInfoModalVisible(false)}
+                >
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
               </ScrollView>
             </View>
           </Modal>
@@ -319,7 +323,7 @@ const handleLogout = async () => {
         >
           <View style={styles.modalBackground}>
             <ScrollView contentContainerStyle={styles.modalView}>
-              <Text style={styles.modalTitle}>Registrar Nuevo Paciente</Text>
+              <Text style={styles.modalTitle}>Registrar Paciente</Text>
               <TextInput
                 style={styles.input}
                 placeholder="Nombres"
@@ -340,7 +344,6 @@ const handleLogout = async () => {
                 placeholderTextColor="#E0E0E0"
                 value={telefono}
                 onChangeText={setTelefono}
-                keyboardType="phone-pad"
               />
               <TextInput
                 style={styles.input}
@@ -348,24 +351,27 @@ const handleLogout = async () => {
                 placeholderTextColor="#E0E0E0"
                 value={email}
                 onChangeText={setEmail}
-                keyboardType="email-address"
               />
               <TextInput
                 style={styles.input}
                 placeholder="Contraseña"
                 placeholderTextColor="#E0E0E0"
+                secureTextEntry={true}
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
               />
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleRegister}>
-                  <Text style={styles.buttonText}>Registrar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setRegisterModalVisible(false)}>
-                  <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleRegister}
+              >
+                <Text style={styles.buttonText}>{loading ? 'Registrando...' : 'Registrar'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setRegisterModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Cancelar</Text>
+              </TouchableOpacity>
             </ScrollView>
           </View>
         </Modal>

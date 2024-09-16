@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const FisioterapeutaCss = StyleSheet.create({
     container: {
@@ -6,8 +7,8 @@ const FisioterapeutaCss = StyleSheet.create({
       backgroundColor: '#E0E0E0',
     },
     topContainer: {
-      height: 150,
-      width: '100%',
+      height: hp('20%'), // Altura al 20% del alto de la pantalla
+      width: wp('100%'), // Ancho al 100% del ancho de la pantalla
       backgroundColor: '#262a5b',
       justifyContent: 'center',
       alignItems: 'center',
@@ -15,64 +16,63 @@ const FisioterapeutaCss = StyleSheet.create({
       borderBottomColor: '#5C6BC0',
     },
     iconContainer: {
-      padding: 10,
+      padding: wp('2.5%'),
       position: 'absolute',
-      left: 10,
+      right: wp('2%'),
     },
     menuIcon: {
-      fontSize: 60,
+      fontSize: wp('15%'), // Tamaño del ícono basado en el ancho de la pantalla
       color: '#5C6BC0',
     },
     menu: {
       position: 'absolute',
-      top: 90,
-      left:2,
-      width: 200,
-      height:190,
+      top: hp('12%'),
+      right: wp('2%'),
+      width: wp('50%'), // Ancho del menú al 50% de la pantalla
+      height: hp('25%'), // Altura del menú al 25% de la pantalla
       backgroundColor: '#5C6BC0',
       borderRadius: 5,
       borderWidth: 1,
       borderColor: '#7f00b2',
       overflow: 'hidden',
-      zIndex: 1,
+      zIndex: 7,
     },
     menuItem: {
-      padding: 8.5,
+      padding: hp('1.2%'),
       borderBottomWidth: 1,
       borderBottomColor: '#7f00b2',
     },
     menuText: {
-      fontSize: 16,
+      fontSize: wp('3.5%'), // Tamaño de la fuente responsivo
       fontWeight: 'bold',
       color: '#fff',
       textAlign: 'center',
     },
     logo: {
-      width: 190,
-      height: 190,
+      width: wp('40%'),
+      height: hp('20%'),
       resizeMode: 'contain',
-      
     },
-    
     infoContainer: {
-      padding: 20,
+      padding: wp('5%'),
     },
     title: {
-      fontSize: 24,
+      fontSize: wp('6%'), // Tamaño de la fuente basado en el ancho de la pantalla
       fontWeight: 'bold',
-      marginBottom: 20,
+      marginBottom: hp('2.5%'),
       color: '#5C6BC0',
+      zIndex: -3,
     },
     addButton: {
       backgroundColor: '#8E24AA',
-      padding: 10,
-      marginVertical: 10,
+      padding: hp('1.5%'),
+      marginVertical: hp('1.5%'),
       borderRadius: 5,
       alignItems: 'center',
     },
     buttonText: {
       color: '#fff',
-      fontSize: 16,
+      fontSize: wp('3.3%'),
     },
     table: {
       flex: 1,
@@ -89,9 +89,10 @@ const FisioterapeutaCss = StyleSheet.create({
     },
     cell: {
       flex: 1,
-      padding: 10,
+      padding: wp('3%'),
       borderColor: '#5C6BC0',
       borderBottomWidth: 1,
+      color:'#262a5b',
     },
     header: {
       fontWeight: 'bold',
@@ -100,8 +101,8 @@ const FisioterapeutaCss = StyleSheet.create({
     },
     actionButton: {
       backgroundColor: '#5C6BC0',
-      padding: 10,
-      marginHorizontal: 5,
+      padding: wp('2%'),
+      marginHorizontal: wp('1%'),
       borderRadius: 5,
       alignItems: 'center',
     },
@@ -112,42 +113,42 @@ const FisioterapeutaCss = StyleSheet.create({
       backgroundColor: 'rgba(0,0,0,0.5)',
     },
     modalView: {
-      width: '80%',
+      width: wp('80%'),
       backgroundColor: '#262a5b',
       borderRadius: 10,
-      padding: 20,
+      padding: wp('5%'),
       alignItems: 'center',
       borderWidth: 2,
       borderColor: '#E0E0E0',
     },
     row: {
       flexDirection: 'row',
-      paddingVertical: 8,
+      paddingVertical: hp('1%'),
       borderBottomWidth: 1,
       borderBottomColor: '#e0e0e0',
       alignItems: 'center',
     },
     infoModalView: {
-      width: '80%',
+      width: wp('80%'),
       backgroundColor: '#262a5b',
       borderRadius: 10,
-      padding: 20,
+      padding: wp('5%'),
       borderWidth: 2,
       borderColor: '#E0E0E0',
     },
     modalTitle: {
-      fontSize: 18,
+      fontSize: wp('4.5%'),
       fontWeight: 'bold',
-      marginBottom: 20,
+      marginBottom: hp('2.5%'),
       color: '#E0E0E0',
     },
     input: {
       width: '100%',
-      padding: 10,
+      padding: wp('3%'),
       borderWidth: 1,
       borderColor: '#E0E0E0',
       borderRadius: 5,
-      marginBottom: 10,
+      marginBottom: hp('1.5%'),
       color:'#fff'
     },
     buttonContainer: {
@@ -157,9 +158,9 @@ const FisioterapeutaCss = StyleSheet.create({
     },
     button: {
       flex: 1,
-      padding: 10,
+      padding: wp('3%'),
       borderRadius: 5,
-      marginHorizontal: 5,
+      marginHorizontal: wp('1%'),
       alignItems: 'center',
     },
     saveButton: {
@@ -175,21 +176,27 @@ const FisioterapeutaCss = StyleSheet.create({
       backgroundColor: '#6c757d',
     },
     infoTable: {
-      marginBottom: 20,
+      marginBottom: hp('2%'),
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 10,
+      marginBottom: hp('1.5%'),
     },
     infoHeader: {
       fontWeight: 'bold',
-      width: 100,
+      width: wp('25%'),
       color:'#E0E0E0'
     },
     infoCell: {
       flex: 1,
       color: '#5C6BC0',
     },
-  });
+    infoText: {
+      fontSize: 16,
+      color: '#333',
+      marginVertical: 10,
+      lineHeight: 22,
+    }  
+      });
 
 export default FisioterapeutaCss;
