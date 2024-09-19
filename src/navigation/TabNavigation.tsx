@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import StatsScreen from '../screens/StatsScreen';
 import { StyleSheet } from 'react-native';
 import { TabNavigatorParamList } from './TabNavigatorTypes'; // Importa el tipo
 
@@ -15,8 +14,6 @@ const getIconName = (routeName: keyof TabNavigatorParamList, focused: boolean) =
       return focused ? 'home' : 'home-outline';
     case 'Profile':
       return focused ? 'person' : 'person-outline';
-    case 'Stats':
-      return focused ? 'bar-chart' : 'bar-chart-outline';
     default:
       return 'help-circle-outline';
   }
@@ -47,7 +44,6 @@ const TabNavigator: React.FC = () => {
     >
       <Tab.Screen name="Welcome" component={WelcomeScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Stats" component={StatsScreen} />
     </Tab.Navigator>
   );
 };

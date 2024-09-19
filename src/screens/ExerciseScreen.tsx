@@ -1,190 +1,114 @@
-/* import React, { useState, useEffect } from 'react';  
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList, Alert, Linking } from 'react-native';  
-import axios from 'axios';  
-import styles from '../CSS/ExerciseCss';  
+import React, { useState } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from '../CSS/ExerciseCss';
+import axios from 'axios'; // Para enviar datos a MySQL
+import firestore from '@react-native-firebase/firestore'; // Para interactuar con Firebase
+import auth from '@react-native-firebase/auth'; // Para obtener el usuario autenticado
 
-const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {  
-  const [exercises, setExercises] = useState([]);  
+const exercises = [
+  { name: 'Plantiflrxión', image: require('../images/Elevaciondetalones.gif'), description: 'Mantén una posición firme. Eleva los talones lentamente, luego bájalos de igual manera. Realiza 15 repeticiones.' },
+  { name: 'Dorsiflexión', image: require('../images/Dorsiflexion.gif'), description: 'Mantén una posición firme. Eleva las puntas de los pies lentamente, luego bájalos de igual manera. Realiza 15 repeticiones.' },
+  { name: 'Planti- dorsiflexión', image: require('../images/Plantidorciflexion.gif'), description: 'Eleva el pie lesionado y muévelo hacia arriba y hacia abajo. Repite el movimiento 15 veces' },
+  { name: 'Eversión- Iversión', image: require('../images/Eversioniversion.gif'), description: 'Eleva el pie lesionado, y mueve hacia los lados. reite el movimiento 15 veces' },
+  { name: 'Propiocepción', image: require('../images/Propiocepcion.gif'), description: 'Mantén una posición firme. Eleva el pie sano y mantén el equilibrio sobre el pie lesionado durante 30 segundos.' },
+];
 
-  // Función para obtener ejercicios desde la API  
-  const fetchExercises = async () => {  
-    try {  
-      const response = await axios.get('https://7cfe-2800-484-3294-8800-b0b3-863a-cd8-733c.ngrok-free.app/ejercicios/Tobillo');
-      setExercises(response.data); // Almacena la respuesta en el estado  
-    } catch (error) {  
-      console.error('Error al obtener los ejercicios:', error);  
-      Alert.alert('Error', 'No se pudieron obtener los ejercicios');  
-    }  
-  };  
+const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const [selectedExercises, setSelectedExercises] = useState<boolean[]>(new Array(exercises.length).fill(false));
 
-  // useEffect para llamar a la API al cargar el componente  
-  useEffect(() => {  
-    fetchExercises();  
-  }, []);  
+  const toggleSelection = (index: number) => {
+    const newSelectedExercises = [...selectedExercises];
+    newSelectedExercises[index] = !newSelectedExercises[index];
+    setSelectedExercises(newSelectedExercises);
+  };
 
-  const handleStartExercise = (exerciseUrl: string) => {  
-    Linking.openURL(exerciseUrl)  
-      .catch(err => Alert.alert('Error', 'No se pudo abrir la URL'));  
-  };  
+  const hasSelectedExercises = selectedExercises.includes(true);
 
-  const renderItem = ({ item }: { item: { diagnostico: string, Nombre_Ejerc: string, Ejercicio: string } }) => (  
-    <View style={styles.exercise}>  
-      <Image source={require('../images/tobillo.png')} style={styles.exerciseImage} />  
-      <Text style={styles.exerciseText}>{item.Nombre_Ejerc}</Text>  
-      <TouchableOpacity  
-        style={styles.startButton}  
-        onPress={() => handleStartExercise(item.Ejercicio)} // Usamos item.ejercicio aquí  
-      >  
-        <Text style={styles.startButtonText}>Comenzar</Text>  
-      </TouchableOpacity>  
-    </View>  
-  );  
+  const handleAssignExercises = async () => {
+    const selectedExerciseNames = exercises
+      .filter((_, index) => selectedExercises[index])
+      .map(exercise => ({ name: exercise.name, description: exercise.description }));
 
-  return (  
-    <ScrollView contentContainerStyle={styles.container}>  
-      <View style={styles.topContainer}>  
-        <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>  
-          <Text style={styles.closeButtonText}>←</Text>  
-        </TouchableOpacity>  
-        <View style={styles.headerContainer}>  
-          <Image  
-            source={require('../images/terapp.png')}  
-            style={styles.logo}  
-          />  
-        </View>  
-      </View>  
-      <View style={styles.infoContainer}>  
-        <Text style={styles.welcomeText}>Ejercicios!</Text>  
-        <Text style={styles.description}>  
-          Te vamos a acompañar en tu recuperación para que te mejores de una manera más efectiva y rápida.  
-        </Text>  
-      </View>  
-      
-      <FlatList  
-        data={exercises}  
-        renderItem={renderItem}  
-        keyExtractor={(item, index) => index.toString()}  
-        contentContainerStyle={styles.exercisesContainer}  
-      />  
-    </ScrollView>  
-  );  
-};  
+    // Obtener usuario autenticado en Firebase
+    const user = auth().currentUser;
+    if (!user) {
+      Alert.alert('Error', 'No se pudo obtener el usuario autenticado.');
+      return;
+    }
 
-export default ExerciseScreen; */
+    try {
+      // Guardar en MySQL (a través de tu API)
+      await axios.post('https://51ca-152-200-176-25.ngrok-free.app/asignacion', {
+        userId: user.uid, // Suponiendo que necesitas pasar el ID del usuario
+        exercises: selectedExerciseNames
+      });
 
+      // Guardar en Firebase
+      await firestore()
+        .collection('Usuarios') // Suponiendo que los usuarios están en la colección 'users'
+        .doc(user.uid) // Guardar ejercicios bajo el usuario autenticado
+        .update({
+          ejerciciosAsignados: firestore.FieldValue.arrayUnion(...selectedExerciseNames)
+        });
 
-
-
-
-
-
-
-import React, { useState, useEffect } from 'react';  
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList, Alert } from 'react-native';  
-import axios from 'axios';  
-import styles from '../CSS/ExerciseCss';  
-
-const ExerciseScreen: React.FC<{ navigation: any }> = ({ navigation }) => {  
-  const [exercises, setExercises] = useState([]);  
-  const [selectedExercises, setSelectedExercises] = useState<{ Nombre_Ejerc: string, Ejercicio: string }[]>([]);  
-
-  // Función para obtener ejercicios desde la API  
-  const fetchExercises = async () => {  
-    try {  
-      const response = await axios.get('https://dabf-2800-484-3294-8800-d929-6fef-c2c3-4cb4.ngrok-free.app/ejercicios/Tobillo');
-      setExercises(response.data); // Almacena la respuesta en el estado  
-    } catch (error) {  
-      console.error('Error al obtener los ejercicios:', error);  
-      Alert.alert('Error', 'No se pudieron obtener los ejercicios');  
-    }  
-  };  
-
-  // useEffect para llamar a la API al cargar el componente  
-  useEffect(() => {  
-    fetchExercises();  
-  }, []);  
-
-  // Manejar la selección de ejercicios  
-  const handleSelectExercise = (exercise: { Nombre_Ejerc: string, Ejercicio: string }) => {  
-    const isSelected = selectedExercises.some(item => item.Nombre_Ejerc === exercise.Nombre_Ejerc);  
-
-    if (isSelected) {  
-      // Si ya está seleccionado, lo eliminamos  
-      setSelectedExercises(prev => prev.filter(item => item.Nombre_Ejerc !== exercise.Nombre_Ejerc));  
-    } else {  
-      // Si no está seleccionado, lo agregamos  
-      setSelectedExercises(prev => [...prev, exercise]);  
-    }  
-  };  
-
-  // Función para asignar ejercicios  
-  const assignExercises = () => {
-    if (selectedExercises.length === 0) {
-      Alert.alert('Error', 'Debes seleccionar al menos un ejercicio');
-    } else {
-      // Navegar a la pantalla de ejercicios asignados pasando los ejercicios seleccionados
-      navigation.navigate('AssignedExercises', { selectedExercises });
+      Alert.alert('Éxito', 'Los ejercicios han sido asignados exitosamente en MySQL y Firebase.');
+    } catch (error) {
+      console.error('Error al asignar ejercicios:', error);
+      Alert.alert('Error', 'Hubo un problema al asignar los ejercicios.');
     }
   };
-  
 
-  // Renderizar cada ejercicio  
-  const renderItem = ({ item }: { item: { diagnostico: string, Nombre_Ejerc: string, Ejercicio: string } }) => {  
-    const isSelected = selectedExercises.some(ex => ex.Nombre_Ejerc === item.Nombre_Ejerc);  
+  const handleViewExercise = (index: number) => {
+    const selectedExercise = exercises[index];
+    navigation.navigate('ExerciseDetails', { exercise: selectedExercise });
+  };
 
-    return (  
-      <View style={styles.exercise}>  
-        <Image source={require('../images/tobillo.png')} style={styles.exerciseImage} />  
-        <Text style={styles.exerciseText}>{item.Nombre_Ejerc}</Text>  
-
-        {/* Botón para seleccionar ejercicio */}  
-        <TouchableOpacity  
-          style={[styles.selectButton, isSelected && styles.selectedButton]}  
-          onPress={() => handleSelectExercise({ Nombre_Ejerc: item.Nombre_Ejerc, Ejercicio: item.Ejercicio })}  
-        >  
-          <Text style={styles.selectButtonText}>{isSelected ? 'Seleccionado' : 'Seleccionar'}</Text>  
-        </TouchableOpacity>  
-      </View>  
-    );  
-  };  
-
-  return (  
-    <ScrollView contentContainerStyle={styles.container}>  
-      <View style={styles.topContainer}>  
-        <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>  
-          <Text style={styles.closeButtonText}>←</Text>  
-        </TouchableOpacity>  
-        <View style={styles.headerContainer}>  
-          <Image  
-            source={require('../images/terapp.png')}  
-            style={styles.logo}  
-          />  
-        </View>  
-      </View>  
-
-      <View style={styles.infoContainer}>  
-        <Text style={styles.welcomeText}>Ejercicios!</Text>  
-        <Text style={styles.description}>  
-          Te vamos a acompañar en tu recuperación para que te mejores de una manera más efectiva y rápida.  
-        </Text>  
-      </View>  
-
-      <FlatList  
-        data={exercises}  
-        renderItem={renderItem}  
-        keyExtractor={(item, index) => index.toString()}  
-        contentContainerStyle={styles.exercisesContainer}  
-      />  
-
-      {/* Botón para asignar ejercicios */}  
-      <TouchableOpacity  
-        style={styles.assignButton}  
-        onPress={assignExercises}  
-      >  
-        <Text style={styles.assignButtonText}>Asignar Ejercicios</Text>  
-      </TouchableOpacity>  
-    </ScrollView>  
-  );  
-};  
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.topContainer}>
+        <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.closeButtonText}>←</Text>
+        </TouchableOpacity>
+        <Image source={require('../images/terapp.png')} style={styles.logo} />
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.welcomeText}>Ejercicios</Text>
+        <Text style={styles.description}>
+          Seleccione los ejercicios que el paciente necesita para su recuperación y presione el botón 'Asignar ejercicios'.
+        </Text>
+      </View>
+      <View style={styles.exercisesContainer}>
+        {exercises.map((exercise, index) => (
+          <View key={index} style={styles.exercise}>
+            <FastImage source={exercise.image} style={styles.exerciseImage} />
+            <Text style={styles.exerciseText}>{exercise.name}</Text>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity
+                style={selectedExercises[index] ? styles.selectedButton : styles.selectButton}
+                onPress={() => toggleSelection(index)}
+              >
+                <Text style={styles.buttonText}>
+                  {selectedExercises[index] ? 'Seleccionado' : 'Seleccionar'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.viewButton}
+                onPress={() => handleViewExercise(index)}
+              >
+                <Text style={styles.viewButtonText}>Ver Ejercicio</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
+      </View>
+      {hasSelectedExercises && (
+        <TouchableOpacity style={styles.assignButton} onPress={handleAssignExercises}>
+          <Text style={styles.assignButtonText}>Asignar Ejercicios</Text>
+        </TouchableOpacity>
+      )}
+    </ScrollView>
+  );
+};
 
 export default ExerciseScreen;

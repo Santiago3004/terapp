@@ -1,161 +1,7 @@
-/* import { StyleSheet } from "react-native";
-
-const ExerciseCss = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    alignItems: 'center', // Centra horizontalmente todos los elementos hijos
-    backgroundColor: '#f8f8f8', // Asegúrate de que haya un color de fondo adecuado
-  },
-      topContainer: {
-        height: 150,
-        width: '100%',
-        backgroundColor: '#262a5b',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 4,
-        borderBottomColor: '#5C6BC0',
-        marginBottom: 20,
-        position: 'relative',
-      },
-      headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-      },
-      infoContainer: {
-        width: '95%',
-        backgroundColor: '#262a5b',
-        padding: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginBottom: 20,
-        zIndex:-1,
-        borderWidth: 2,
-        borderColor: '#5C6BC0',
-      },
-      welcomeText: {
-        fontSize: 24,
-        color: '#5C6BC0',
-        fontWeight: 'bold',
-        marginVertical: 10,
-        textAlign: 'center',
-      },
-      description: {
-        textAlign: 'center',
-        color: '#fff',
-      },
-      startButton: {
-        backgroundColor: '#7f00b2',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        marginTop: 10,
-      },
-      startButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        textAlign: 'center',
-      },
-      closeButton: {
-        position: 'absolute',
-        top: 10,
-        left: 10,
-        padding: 10,
-      },
-      closeButtonText: {
-        fontSize: 35,
-        color: '#5C6BC0',
-        fontWeight: 'bold',
-      },
-      logo: {
-        width: 200,
-        height: 100,
-        resizeMode: 'contain',
-      },
-      title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#5C6BC0',
-        textAlign: 'center',
-        marginVertical: 20,
-      },
-      exercisesContainer: {
-        paddingHorizontal: 10,
-        width: 370,
-      },
-      exercise: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#262a5b',
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-      },
-      exerciseImage: {
-        width: 50,
-        height: 50,
-        resizeMode: 'contain',
-      },
-      exerciseText: {
-        flex: 1,
-        marginLeft: 10,
-        fontSize: 16,
-        color: '#E0E0E0',
-      },
-      button: {
-        backgroundColor: '#5C6BC0',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        margin: 20,
-        alignItems: 'center',
-      },
-      buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-      },
-      // Otros estilos que ya tienes...
-
-  selectButton: {
-    backgroundColor: '#007bff',  // Color para el botón de seleccionar
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  selectedButton: {
-    backgroundColor: '#28a745',  // Cambia el color cuando está seleccionado (verde)
-  },
-  selectButtonText: {
-    color: '#fff',  // Texto blanco
-    fontWeight: 'bold',
-  },
-  assignButton: {
-    backgroundColor: '#ff5722',  // Color del botón de "Asignar Ejercicios"
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginVertical: 20,
-    alignSelf: 'center',  // Centrar el botón en el contenedor
-  },
-  assignButtonText: {
-    color: '#fff',  // Texto blanco
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-    });
-    
-
-export default ExerciseCss; */
-
 import { StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const ExerciseCss = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     alignItems: 'center',
@@ -172,54 +18,14 @@ const ExerciseCss = StyleSheet.create({
     marginBottom: hp('2%'), // Margen inferior adaptado al 2% del alto
     position: 'relative',
   },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: wp('3%'), // Padding horizontal adaptado al 3% del ancho de la pantalla
-  },
-  infoContainer: {
-    width: '95%',
-    backgroundColor: '#262a5b',
-    padding: wp('3%'), // Padding adaptado al 3% del ancho de la pantalla
-    borderRadius: wp('3%'), // Radio de borde adaptado al 3% del ancho
-    alignItems: 'center',
-    marginBottom: hp('3%'), // Margen inferior adaptado al 3% del alto
-    zIndex: -1,
-    borderWidth: hp('0.3%'), // Grosor del borde adaptado al 0.3% del alto
-    borderColor: '#5C6BC0',
-  },
-  welcomeText: {
-    fontSize: wp('6%'), // Tamaño de fuente adaptado al 6% del ancho
-    color: '#5C6BC0',
-    fontWeight: 'bold',
-    marginVertical: hp('2%'), // Margen vertical adaptado al 2% del alto
-    textAlign: 'center',
-  },
-  description: {
-    textAlign: 'center',
-    color: '#fff',
-  },
-  startButton: {
-    backgroundColor: '#7f00b2',
-    paddingVertical: hp('2%'), // Padding vertical adaptado al 2% del alto
-    paddingHorizontal: wp('5%'), // Padding horizontal adaptado al 5% del ancho
-    borderRadius: wp('2%'), // Radio de borde adaptado al 2% del ancho
-    marginTop: hp('2%'), // Margen superior adaptado al 2% del alto
-  },
-  startButtonText: {
-    color: '#fff',
-    fontSize: wp('4%'), // Tamaño de fuente adaptado al 4% del ancho
-    textAlign: 'center',
-  },
   closeButton: {
     position: 'absolute',
-    top: hp('1%'), // Adaptado al 1% del alto de la pantalla
-    left: wp('2%'), // Adaptado al 2% del ancho de la pantalla
-    padding: wp('3%'), // Padding adaptado al 3% del ancho de la pantalla
+    top: hp('2%'), // Ajustado al 2% del alto de la pantalla
+    left: wp('2%'), // Ajustado al 2% del ancho de la pantalla
+    padding: wp('2%'), // Ajustado al 2% del ancho de la pantalla
   },
   closeButtonText: {
-    fontSize: wp('8%'), // Tamaño de fuente adaptado al 8% del ancho
+    fontSize: wp('12%'), // Tamaño de fuente ajustado al 8% del ancho de la pantalla
     color: '#5C6BC0',
     fontWeight: 'bold',
   },
@@ -229,77 +35,121 @@ const ExerciseCss = StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
-    fontSize: wp('6%'), // Tamaño de fuente adaptado al 6% del ancho
+    fontSize: wp('6%'), // Tamaño de fuente ajustado al 6% del ancho de la pantalla
     fontWeight: 'bold',
-    color: '#5C6BC0',
+    color: '#7f00b2',
     textAlign: 'center',
-    marginVertical: hp('3%'), // Margen vertical adaptado al 3% del alto
+    marginVertical: hp('2%'), // Margen vertical ajustado al 2% del alto de la pantalla
   },
   exercisesContainer: {
-    paddingHorizontal: wp('3%'), // Padding horizontal adaptado al 3% del ancho de la pantalla
-    width: wp('90%'), // Ancho adaptado al 90% del ancho de la pantalla
+    paddingHorizontal: wp('4%'), // Padding horizontal ajustado al 4% del ancho de la pantalla
   },
   exercise: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#262a5b',
-    padding: wp('3%'), // Padding adaptado al 3% del ancho
-    marginBottom: hp('2%'), // Margen inferior adaptado al 2% del alto
-    borderRadius: wp('2%'), // Radio de borde adaptado al 2% del ancho
+    padding: wp('3%'), // Padding adaptado al 3% del ancho de la pantalla
+    marginBottom: hp('2%'), // Margen inferior adaptado al 2% del alto de la pantalla
+    borderRadius: wp('2%'),
+    borderWidth: 2.5,
+    borderColor: '#5C6BC0',
+    width: wp('80%'),   // Radio de borde ajustado al 2% del ancho de la pantalla
   },
   exerciseImage: {
     width: wp('12%'), // Ancho adaptado al 12% del ancho de la pantalla
-    height: hp('6%'), // Altura adaptada al 6% del alto de la pantalla
+    height: wp('22%'),
+    borderRadius: wp('1%'),
+    borderWidth: 1.5,
+    borderColor: '#fff', // Altura adaptada al 12% del ancho de la pantalla
     resizeMode: 'contain',
   },
   exerciseText: {
     flex: 1,
-    marginLeft: wp('3%'), // Margen izquierdo adaptado al 3% del ancho
-    fontSize: wp('4%'), // Tamaño de fuente adaptado al 4% del ancho
-    color: '#E0E0E0',
+    marginLeft: wp('3%'), // Margen izquierdo adaptado al 3% del ancho de la pantalla
+    fontSize: wp('4%'), // Tamaño de la fuente adaptado al 4% del ancho de la pantalla
+    color: '#fff',
   },
-  button: {
-    backgroundColor: '#5C6BC0',
-    paddingVertical: hp('2%'), // Padding vertical adaptado al 2% del alto
-    paddingHorizontal: wp('5%'), // Padding horizontal adaptado al 5% del ancho
-    borderRadius: wp('2%'), // Radio de borde adaptado al 2% del ancho
-    margin: wp('5%'), // Margen adaptado al 5% del ancho
+  infoContainer: {
+    width: wp('90%'), // Ancho ajustado al 90% del ancho de la pantalla
+    backgroundColor: '#262a5b',
+    padding: wp('4%'), // Padding ajustado al 4% del ancho de la pantalla
+    borderRadius: wp('3%'), // Radio de borde ajustado al 3% del ancho de la pantalla
+    alignItems: 'center',
+    marginBottom: hp('2%'), // Margen inferior ajustado al 2% del alto de la pantalla
+    zIndex: -1,
+    borderWidth: hp('0.5%'), // Grosor del borde ajustado al 0.5% del alto de la pantalla
+    borderColor: '#5C6BC0',
+  },
+  welcomeText: {
+    fontSize: wp('5%'), // Tamaño de fuente ajustado al 5% del ancho de la pantalla
+    color: '#5C6BC0',
+    fontWeight: 'bold',
+    marginVertical: hp('1.5%'), // Margen vertical ajustado al 1.5% del alto de la pantalla
+    textAlign: 'center',
+  },
+  description: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: wp('4%'), // Tamaño de fuente ajustado al 4% del ancho de la pantalla
+  },
+  
+  
+  
+
+  //////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////
+  buttonsContainer: {
+    flexDirection: 'column', // Mantiene la dirección de los botones en vertical
+    alignItems: 'center', // Alinea los botones en el centro horizontalmente
+    marginTop: hp('2%'), // Espacio superior adaptado
+  },
+  selectButton: {
+    backgroundColor: '#5C6BC0', // Color para el botón "Seleccionar"
+    paddingVertical: hp('1%'), // Padding vertical adaptado
+    paddingHorizontal: wp('4%'), // Padding horizontal adaptado
+    borderRadius: wp('3%'), // Bordes redondeados adaptados
+    marginBottom: hp('1.5%'), // Espacio entre botones adaptado
+    alignItems: 'center',
+  },
+  selectedButton: {
+    backgroundColor: '#7f00b2', // Color para el botón "Seleccionado"
+    paddingVertical: hp('1%'), // Padding vertical adaptado
+    paddingHorizontal: wp('3%'), // Padding horizontal adaptado
+    borderRadius: wp('3%'), // Bordes redondeados adaptados
+    marginBottom: hp('1.5%'), // Espacio entre botones adaptado
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: wp('4%'), // Tamaño de fuente adaptado al 4% del ancho
+    fontSize: wp('3.5%'), // Tamaño de fuente adaptado
     fontWeight: 'bold',
   },
-  selectButton: {
-    backgroundColor: '#007bff', // Color para el botón de seleccionar
-    paddingVertical: hp('2%'), // Padding vertical adaptado al 2% del alto
-    paddingHorizontal: wp('5%'), // Padding horizontal adaptado al 5% del ancho
-    borderRadius: wp('2%'), // Radio de borde adaptado al 2% del ancho
-    marginTop: hp('2%'), // Margen superior adaptado al 2% del alto
+  viewButton: {
+    backgroundColor: '#fff', // Color verde para el botón "Ver Ejercicio"
+    paddingVertical: hp('1%'), // Padding vertical adaptado
+    paddingHorizontal: wp('3%'), // Padding horizontal adaptado
+    borderRadius: wp('3%'), // Bordes redondeados adaptados
     alignItems: 'center',
   },
-  selectedButton: {
-    backgroundColor: '#28a745', // Cambia el color cuando está seleccionado (verde)
-  },
-  selectButtonText: {
-    color: '#fff', // Texto blanco
+  viewButtonText: {
+    color: '#262a5b',
+    fontSize: wp('3.5%'), // Tamaño de fuente adaptado
     fontWeight: 'bold',
   },
   assignButton: {
-    backgroundColor: '#ff5722', // Color del botón de "Asignar Ejercicios"
-    paddingVertical: hp('2.5%'), // Padding vertical adaptado al 2.5% del alto
-    paddingHorizontal: wp('8%'), // Padding horizontal adaptado al 8% del ancho
-    borderRadius: wp('3%'), // Radio de borde adaptado al 3% del ancho
-    marginVertical: hp('3%'), // Margen vertical adaptado al 3% del alto
-    alignSelf: 'center', // Centrar el botón en el contenedor
+    backgroundColor: '#7f00b2',
+    paddingVertical: hp('1.5%'), // Padding vertical adaptado
+    paddingHorizontal: wp('5%'), // Padding horizontal adaptado
+    borderRadius: wp('3%'), // Bordes redondeados adaptados
+    alignItems: 'center',
+    marginVertical: hp('2.5%'), // Espacio vertical adaptado
   },
   assignButtonText: {
-    color: '#fff', // Texto blanco
-    fontSize: wp('4.5%'), // Tamaño de fuente adaptado al 4.5% del ancho
+    color: '#fff',
+    fontSize: wp('4.5%'), // Tamaño de fuente adaptado
     fontWeight: 'bold',
   },
 });
 
-export default ExerciseCss;
+export default styles;

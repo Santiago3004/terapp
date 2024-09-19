@@ -1,42 +1,80 @@
 import { StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: wp('5%'), // Padding adaptado al 5% del ancho de la pantalla
-    backgroundColor: '#fff',
+    flexGrow: 1,
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
   },
-  title: {
-    fontSize: wp('6%'), // Tamaño de fuente adaptado al 6% del ancho de la pantalla
+  topContainer: {
+    height: hp('20%'),
+    width: '100%',
+    backgroundColor: '#262a5b',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: hp('0.5%'),
+    borderBottomColor: '#5C6BC0',
+    marginBottom: hp('2%'),
+    position: 'relative',
+  },
+  logo: {
+    width: wp('50%'),
+    height: hp('15%'),
+    resizeMode: 'contain',
+  },
+  infoContainer: {
+    width: wp('90%'),
+    backgroundColor: '#262a5b',
+    padding: wp('4%'),
+    borderRadius: wp('3%'),
+    alignItems: 'center',
+    marginBottom: hp('2%'),
+    zIndex: -1,
+    borderWidth: hp('0.5%'),
+    borderColor: '#5C6BC0',
+  },
+  welcomeText: {
+    fontSize: wp('5%'),
+    color: '#5C6BC0',
     fontWeight: 'bold',
-    marginBottom: hp('3%'), // Margen inferior adaptado al 3% del alto de la pantalla
+    marginVertical: hp('1.5%'),
     textAlign: 'center',
   },
-  exerciseContainer: {
-    marginBottom: hp('2%'), // Margen inferior adaptado al 2% del alto de la pantalla
-    padding: wp('4%'), // Padding adaptado al 4% del ancho de la pantalla
-    backgroundColor: '#f0f0f0',
-    borderRadius: wp('2%'), // Radio de borde adaptado al 2% del ancho de la pantalla
-  },
-  exerciseName: {
-    fontSize: wp('5%'), // Tamaño de fuente adaptado al 5% del ancho de la pantalla
-    fontWeight: 'bold',
-  },
-  exerciseDetail: {
-    fontSize: wp('4%'), // Tamaño de fuente adaptado al 4% del ancho de la pantalla
-    color: '#666',
-  },
-  backButton: {
-    marginTop: hp('3%'), // Margen superior adaptado al 3% del alto de la pantalla
-    padding: wp('4%'), // Padding adaptado al 4% del ancho de la pantalla
-    backgroundColor: '#2196F3',
-    borderRadius: wp('2%'), // Radio de borde adaptado al 2% del ancho de la pantalla
-    alignItems: 'center',
-  },
-  backButtonText: {
+  description: {
+    textAlign: 'center',
     color: '#fff',
-    fontSize: wp('4%'), // Tamaño de fuente adaptado al 4% del ancho de la pantalla
-    fontWeight: 'bold',
+    fontSize: wp('4%'),
+  },
+  exercisesContainer: {
+    paddingHorizontal: wp('4%'),
+  },
+  exercise: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#262a5b',
+    padding: wp('3%'),
+    marginBottom: hp('2%'),
+    borderRadius: wp('2%'),
+    borderWidth: 2.5,
+    borderColor: '#5C6BC0',
+    width: wp('80%'),
+  },
+  exerciseImage: {
+    width: wp('12%'),
+    height: wp('12%'),
+    borderRadius: wp('1%'),
+    borderWidth: 1.5,
+    borderColor: '#fff',
+    resizeMode: 'contain',
+  },
+  exerciseText: {
+    flex: 1,
+    marginLeft: wp('3%'),
+    fontSize: wp('4%'),
+    color: '#fff',
   },
 });
+
+export default styles;

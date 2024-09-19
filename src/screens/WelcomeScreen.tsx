@@ -109,7 +109,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation }) => {
         </Text>
 
         <Text style={styles.description}>
-          Elige la parte de tu cuerpo donde tengas la lesión. Te vamos a acompañar en tu recuperación para que te mejores de una manera más efectiva y rápida.
+        Selecciona la zona lesionada de tu cuerpo. Te ayudaremos a recuperarte de forma rápida y efectiva.
         </Text>
       </View>
 

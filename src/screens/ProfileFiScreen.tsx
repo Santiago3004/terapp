@@ -197,6 +197,9 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileImageContainer}>
+        <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.closeButtonText}>←</Text>
+        </TouchableOpacity>
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (

@@ -20,33 +20,12 @@ const modules = [
 ];
 
 const ExerciseModulesScreen: React.FC<Props> = ({ navigation }) => {
-  const [exercises, setExercises] = useState<any[]>([]); // Para almacenar los ejercicios
-
   const handlePress = (moduleName: string) => {
-    if (moduleName !== 'Tobillo') {
-      Alert.alert('En desarrollo', `El módulo de "${moduleName}" aún no se encuentra disponible 🚧.`);
+    if (moduleName === 'Tobillo') {
+      // Navegar a la pantalla de ejercicios para el tobillo
+      navigation.navigate('Exercise', { moduleName: moduleName, exercises: [] }); // Asegúrate de que "Exercise" esté definido en tu Stack Navigator
     } else {
-      // Llamada a la API para obtener los ejercicios
-      fetch(`https://dabf-2800-484-3294-8800-d929-6fef-c2c3-4cb4.ngrok-free.app/ejercicios/${moduleName}`)
-        .then(response => {
-          console.log('Estado de la respuesta:', response.status); // Verifica el estado de la respuesta
-          return response.text(); // Obtén el texto de la respuesta
-        })
-        .then(text => {
-          console.log('Texto de la respuesta:', text); // Verifica el texto de la respuesta
-          try {
-            const data = JSON.parse(text); // Intenta parsear el texto como JSON
-            setExercises(data); // Almacena los ejercicios obtenidos
-            navigation.navigate('Exercise', { moduleName, exercises: data });
-          } catch (error) {
-            console.error('Error al parsear JSON:', error);
-            Alert.alert('Error', 'Formato de respuesta inesperado.');
-          }
-        })
-        .catch(error => {
-          console.error('Error al obtener ejercicios:', error);
-          Alert.alert('Error', 'No se pudieron obtener los ejercicios. Inténtalo de nuevo más tarde.');
-        });
+      Alert.alert('En desarrollo', `El módulo de "${moduleName}" aún no está disponible.`);
     }
   };
 
@@ -60,17 +39,16 @@ const ExerciseModulesScreen: React.FC<Props> = ({ navigation }) => {
           <Image source={require('../images/terapp.png')} style={styles.logo} />
         </View>
       </View>
-      <Text style={styles.title}>Módulos</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.welcomeText}>Módulos</Text>
+        <Text style={styles.description}>
+        Seleccione el módulo donde el paciente tiene la lesión.
+        </Text>
+      </View>
       <View style={styles.modulesContainer}>
         {modules.map((module, index) => (
           <View key={index} style={styles.module}>
-            <Image
-              source={module.image}
-              style={[
-                styles.moduleImage,
-                module.name !== 'Tobillo' && { opacity: 0.5 }
-              ]}
-            />
+            <Image source={module.image} style={[styles.moduleImage, module.name !== 'Tobillo' && { opacity: 0.5 }]} />
             <Text style={styles.moduleText}>{module.name}</Text>
             <TouchableOpacity
               style={styles.button}

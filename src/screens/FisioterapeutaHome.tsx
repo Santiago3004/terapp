@@ -152,10 +152,10 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
     <View style={styles.row}>
       <Text style={styles.cell}>{item.nombres}</Text>
       <TouchableOpacity style={styles.actionButton} onPress={() => handleAddExercise('Tobillo')}>
-        <Text style={styles.buttonText}>Agregar Ejercicio</Text>
+        <Text style={styles.buttonTextAV}>Agregar Ejercicio</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.actionButton} onPress={() => handleViewInfo(item)}>
-        <Text style={styles.buttonText}>Ver Información</Text>
+        <Text style={styles.buttonTextAV}>Ver Información</Text>
       </TouchableOpacity>
     </View>
   );
@@ -201,11 +201,8 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
         </TouchableOpacity>
         {menuVisible && (
           <Animated.View style={[styles.menu, { height: menuHeight }]}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Profile')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProfileFi')}>
               <Text style={styles.menuText}>Mi cuenta</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.menuText}>Configuración</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
               <Text style={styles.menuText}>Cerrar sesión</Text>
@@ -214,9 +211,11 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
         )}
       </View>
       <View style={styles.infoContainer}>
+      <View style={styles.infoContainerN}>
         <Text style={styles.title}>Bienvenido Fisioterapeuta, {userName}</Text>
+      </View>
         <TouchableOpacity style={styles.addButton} onPress={() => setRegisterModalVisible(true)}>
-          <Text style={styles.buttonText}>Agregar Paciente</Text>
+          <Text style={styles.buttonTextAV}>Agregar Paciente</Text>
         </TouchableOpacity>
         <View style={styles.table}>
           <View style={styles.headerRow}>
@@ -268,51 +267,66 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
                   value={currentUsuario.email}
                   onChangeText={(text) => setCurrentUsuario({ ...currentUsuario, email: text })}
                 />
-                <TouchableOpacity
-                  style={styles.saveButton}
-                  onPress={handleSave}
-                >
-                  <Text style={styles.buttonText}>{loading ? 'Guardando...' : 'Guardar Cambios'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainerModal}>
+              <TouchableOpacity style={[styles.ButtonModal, styles.saveButton, loading && { opacity: 0.6 }]} onPress={handleSave}disabled={loading}>
+                {loading ? (
+                <Text style={styles.buttonTextCarga}>Guardando...</Text>
+                ) : (
+                 <Text style={styles.buttonTextAV}>Guardar</Text>
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.ButtonModal, styles.cancelButton]} onPress={() => setModalVisible(false)}>
+               <Text style={styles.buttonTextModal}>Cancelar</Text>
+              </TouchableOpacity>
+              </View>
               </ScrollView>
             </View>
           </Modal>
         )}
 
         {infoUsuario && (
-          <Modal 
-            animationType="slide"
-            transparent={true}
-            visible={infoModalVisible}
-            onRequestClose={() => setInfoModalVisible(false)}
-          >
-            <View style={styles.modalBackground}>
-              <ScrollView contentContainerStyle={styles.modalView}>
-                <Text style={styles.modalTitle}>Información del Usuario</Text>
-                <Text style={styles.infoText}>Nombre: {infoUsuario.nombres} {infoUsuario.apellidos}</Text>
-                <Text style={styles.infoText}>Teléfono: {infoUsuario.telefono}</Text>
-                <Text style={styles.infoText}>Email: {infoUsuario.email}</Text>
-                <TouchableOpacity
-                  style={styles.editButton}
-                  onPress={handleEditInfo}
-                >
-                  <Text style={styles.buttonText}>Editar Información</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={() => setInfoModalVisible(false)}
-                >
-                  <Text style={styles.buttonText}>Cerrar</Text>
-                </TouchableOpacity>
-              </ScrollView>
-            </View>
-          </Modal>
+           <Modal
+           animationType="slide"
+           transparent={true}
+           visible={infoModalVisible}
+           onRequestClose={() => setInfoModalVisible(false)}
+         >
+           <View style={styles.modalBackground}>
+             <ScrollView contentContainerStyle={styles.infoModalView}>
+               <Text style={styles.modalTitle}>Información del Paciente</Text>
+               <View style={styles.infoTable}>
+                 <View style={styles.infoRow}>
+                   <Text style={styles.infoHeader}>Nombres:</Text>
+                   <Text style={styles.infoCell}>{infoUsuario.nombres}</Text>
+                 </View>
+                 <View style={styles.infoRow}>
+                   <Text style={styles.infoHeader}>Apellidos:</Text>
+                   <Text style={styles.infoCell}>{infoUsuario.apellidos}</Text>
+                 </View>
+                 <View style={styles.infoRow}>
+                   <Text style={styles.infoHeader}>Teléfono:</Text>
+                   <Text style={styles.infoCell}>{infoUsuario.telefono}</Text>
+                 </View>
+                 <View style={styles.infoRow}>
+                   <Text style={styles.infoHeader}>Email:</Text>
+                   <Text style={styles.infoCell}>{infoUsuario.email}</Text>
+                 </View>
+                 <View style={styles.infoRow}>
+                   <Text style={styles.infoHeader}>Rol:</Text>
+                   <Text style={styles.infoCell}>{infoUsuario.rol}</Text>
+                 </View>
+               </View>
+               <View style={styles.buttonContainerModal}>
+               <TouchableOpacity style={[styles.ButtonModal, styles.editButton]} onPress={handleEditInfo}>
+                 <Text style={styles.buttonTextModal}>Editar</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={[styles.ButtonModal, styles.cancelButton]} onPress={() => setInfoModalVisible(false)}>
+                 <Text style={styles.buttonTextModal}>Cerrar</Text>
+               </TouchableOpacity>
+               </View>
+             </ScrollView>
+           </View>
+         </Modal>
         )}
 
         <Modal
@@ -360,18 +374,14 @@ const FisioterapeutaHome: React.FC<Props> = ({ route, navigation }) => {
                 value={password}
                 onChangeText={setPassword}
               />
-              <TouchableOpacity
-                style={styles.saveButton}
-                onPress={handleRegister}
-              >
-                <Text style={styles.buttonText}>{loading ? 'Registrando...' : 'Registrar'}</Text>
+              <View style={styles.buttonContainerModal}>
+              <TouchableOpacity style={[styles.ButtonModal, styles.editButton]} onPress={handleRegister}>
+                 <Text style={styles.buttonTextModal}>{loading ? 'Registrando...' : 'Registrar'}</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setRegisterModalVisible(false)}
-              >
-                <Text style={styles.buttonText}>Cancelar</Text>
+              <TouchableOpacity style={[styles.ButtonModal, styles.cancelButton]}onPress={() => setRegisterModalVisible(false)}>
+                <Text style={styles.buttonTextModal}>Cancelar</Text>
               </TouchableOpacity>
+              </View>
             </ScrollView>
           </View>
         </Modal>

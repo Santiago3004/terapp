@@ -28,19 +28,19 @@ const FisioterapeutaCss = StyleSheet.create({
       position: 'absolute',
       top: hp('12%'),
       right: wp('2%'),
-      width: wp('50%'), // Ancho del menú al 50% de la pantalla
-      height: hp('25%'), // Altura del menú al 25% de la pantalla
-      backgroundColor: '#5C6BC0',
+      width: wp('40%'), // Ancho del menú al 50% de la pantalla
+      height: hp('2%'), // Altura del menú al 25% de la pantalla
+      backgroundColor: '#262a5b',
       borderRadius: 5,
-      borderWidth: 1,
-      borderColor: '#7f00b2',
+      borderWidth: 3,
+      borderColor: '#5C6BC0',
       overflow: 'hidden',
-      zIndex: 7,
+      zIndex: 5,
     },
     menuItem: {
       padding: hp('1.2%'),
-      borderBottomWidth: 1,
-      borderBottomColor: '#7f00b2',
+      borderBottomWidth: 3,
+      borderBottomColor: '#5C6BC0',
     },
     menuText: {
       fontSize: wp('3.5%'), // Tamaño de la fuente responsivo
@@ -55,13 +55,25 @@ const FisioterapeutaCss = StyleSheet.create({
     },
     infoContainer: {
       padding: wp('5%'),
+      zIndex: -1,
+    },
+    infoContainerN:{
+      width: wp('90%'), // Ancho adaptado al 90% del ancho de la pantalla
+    backgroundColor: '#262a5b',
+    padding: wp('4%'), // Padding adaptado al 4% del ancho de la pantalla
+    borderRadius: wp('3%'), // Radio de borde adaptado al 3% del ancho de la pantalla
+    alignItems: 'center',
+    marginBottom: 2, // Margen inferior adaptado al 2% del alto de la pantalla
+    zIndex: -100,
+    borderWidth: hp('0.4%'), // Grosor del borde adaptado al 0.5% del alto de la pantalla
+    borderColor: '#5C6BC0',
     },
     title: {
-      fontSize: wp('6%'), // Tamaño de la fuente basado en el ancho de la pantalla
+      fontSize: wp('5%'), // Tamaño de fuente adaptado al 6% del ancho de la pantalla
+      color: '#fff',
       fontWeight: 'bold',
-      marginBottom: hp('2.5%'),
-      color: '#5C6BC0',
-      zIndex: -3,
+      marginVertical: hp('1.5%'), // Margen vertical adaptado al 1.5% del alto de la pantalla
+      textAlign: 'center',
     },
     addButton: {
       backgroundColor: '#8E24AA',
@@ -70,9 +82,17 @@ const FisioterapeutaCss = StyleSheet.create({
       borderRadius: 5,
       alignItems: 'center',
     },
-    buttonText: {
+    buttonTextAV: {
       color: '#fff',
-      fontSize: wp('3.3%'),
+      fontSize: wp('3.5%'), // Tamaño de la fuente adaptado al 4% del ancho de la pantalla
+    },
+    buttonTextCarga: {
+      color: 'red',
+      fontSize: wp('3.5%'), // Tamaño de la fuente adaptado al 4% del ancho de la pantalla
+    },
+    buttonTextModal: {
+      color: '#fff',
+      fontSize: wp('4%'), 
     },
     table: {
       flex: 1,
@@ -84,14 +104,14 @@ const FisioterapeutaCss = StyleSheet.create({
       flexDirection: 'row',
       backgroundColor: '#262a5b',
       borderBottomWidth: 1,
-      borderBottomColor: '#5C6BC0',
+      borderBottomColor: '#E0E0E0',
       borderRadius: 3,
     },
     cell: {
       flex: 1,
       padding: wp('3%'),
-      borderColor: '#5C6BC0',
-      borderBottomWidth: 1,
+      borderColor: '#E0E0E0',
+      borderBottomWidth: 2,
       color:'#262a5b',
     },
     header: {
@@ -124,8 +144,8 @@ const FisioterapeutaCss = StyleSheet.create({
     row: {
       flexDirection: 'row',
       paddingVertical: hp('1%'),
-      borderBottomWidth: 1,
-      borderBottomColor: '#e0e0e0',
+      borderBottomWidth: 2,
+      borderBottomColor: '#5C6BC0',
       alignItems: 'center',
     },
     infoModalView: {
@@ -169,6 +189,19 @@ const FisioterapeutaCss = StyleSheet.create({
     cancelButton: {
       backgroundColor: '#dc3545',
     },
+    buttonContainerModal: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    ButtonModal: {
+    flex: 1,
+    padding: wp('3%'), // Padding adaptado al 3% del ancho de la pantalla
+    borderRadius: 5,
+    marginHorizontal: wp('2%'), // Margen horizontal adaptado al 2% del ancho de la pantalla
+    alignItems: 'center',
+    },
+
     editButton: {
       backgroundColor: '#5C6BC0',
     },

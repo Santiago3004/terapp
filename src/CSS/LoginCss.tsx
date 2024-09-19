@@ -69,7 +69,7 @@ const LoginCss = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: wp('4.5%'), // Tamaño de fuente adaptado al 4.5% del ancho de la pantalla
+    fontSize: wp('4%'), // Tamaño de fuente adaptado al 4.5% del ancho de la pantalla
     fontWeight: 'bold',
   }
 });

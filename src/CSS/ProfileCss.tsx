@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     height: wp('60%'), // Altura adaptada al 60% del ancho de la pantalla (mantiene la proporción cuadrada)
     borderRadius: wp('30%'), // Radio de borde basado en el ancho de la pantalla
     borderWidth: 3,
-    borderColor: '#fff',
+    borderColor: '#5C6BC0',
   },
   title: {
     fontSize: wp('7%'), // Tamaño de la fuente basado en el ancho de la pantalla

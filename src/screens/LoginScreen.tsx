@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/App';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import TextInput from '../components/TextInput';
+import { useFocusEffect } from '@react-navigation/native'; // Importar useFocusEffect
 import styles from '../CSS/LoginCss';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -17,6 +18,14 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Limpiar campos al enfocar la pantalla
+  useFocusEffect(
+    React.useCallback(() => {
+      setEmail('');  // Limpiar email
+      setPassword('');  // Limpiar password
+    }, [])
+  );
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -73,11 +82,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     } catch (err: any) {
       console.error('Error al iniciar sesión:', err);
 
-      let errorMessage = 'Error Desconocido. Por favor, intenta nuevamente'
+      let errorMessage = 'Error Desconocido. Por favor, intenta nuevamente';
 
-      // Verifica si err tiene un código de error
       if (err && err.code) {
-        // Imprime err.code para depuración
         console.log('Código de error:', err.code);
         switch (err.code) {
           case 'auth/user-not-found':
@@ -103,7 +110,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             break;
         }
       } else {
-        // Imprime el error completo para depuración
         console.log('Error completo:', err);
       }
 
@@ -111,6 +117,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = async () => {
+    await auth().signOut();
+    setEmail(''); // Limpiar campos de credenciales
+    setPassword('');
   };
 
   return (
